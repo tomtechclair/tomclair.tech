@@ -112,21 +112,31 @@
                 <h2 class="section-title">Ce Qu'ils Disent De Jarvis</h2>
                 <p class="section-desc">Découvrez les retours de notre communauté sur l'utilisation de l'assistant IA</p>
             </div>
-            <div class="testimonials-grid">
-                <div class="testimonial-card reveal" style="text-align: center; border: 2px dashed rgba(0, 210, 255, 0.3);">
-                    <div class="stars" style="color: var(--text-secondary);">
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                    </div>
-                    <p class="testimonial-text" style="color: var(--text-secondary);">"Cet espace attend votre témoignage ! N'hésitez pas à partager votre expérience avec l'assistant Jarvis."</p>
-                    <div class="testimonial-author" style="justify-content: center;">
-                        <div class="author-info">
-                            <a href="#contact" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.8rem;">
-                                Laisser un témoignage
-                            </a>
+            <div class="testimonials-grid" style="display: flex; justify-content: center;">
+                <div class="testimonial-card reveal" style="text-align: center; border: 2px dashed rgba(0, 210, 255, 0.3); max-width: 600px; width: 100%;">
+                    <h3 style="font-family: 'Orbitron', sans-serif; font-size: 1.5rem; margin-bottom: 1rem;">Notez l'assistant Jarvis !</h3>
+                    <p class="testimonial-text" style="color: var(--text-secondary); margin-bottom: 2rem;">"Donnez-nous une note jusqu'à 7 étoiles pour évaluer l'IA."</p>
+                    
+                    <form action="https://api.web3forms.com/submit" method="POST" class="rating-form">
+                        <!-- Clé Web3Forms existante -->
+                        <input type="hidden" name="access_key" value="42e1bd3d-5ef8-42c7-bb4b-cd7335bfbe16">
+                        <input type="hidden" name="subject" value="Nouvelle note 7 Étoiles sur le site !">
+                        <input type="hidden" name="redirect" value="https://web3forms.com/success">
+                        
+                        <div class="star-rating">
+                            <input type="radio" id="star7" name="Note_Etoiles" value="7" required/><label for="star7"><i class="fa-solid fa-star"></i></label>
+                            <input type="radio" id="star6" name="Note_Etoiles" value="6" /><label for="star6"><i class="fa-solid fa-star"></i></label>
+                            <input type="radio" id="star5" name="Note_Etoiles" value="5" /><label for="star5"><i class="fa-solid fa-star"></i></label>
+                            <input type="radio" id="star4" name="Note_Etoiles" value="4" /><label for="star4"><i class="fa-solid fa-star"></i></label>
+                            <input type="radio" id="star3" name="Note_Etoiles" value="3" /><label for="star3"><i class="fa-solid fa-star"></i></label>
+                            <input type="radio" id="star2" name="Note_Etoiles" value="2" /><label for="star2"><i class="fa-solid fa-star"></i></label>
+                            <input type="radio" id="star1" name="Note_Etoiles" value="1" /><label for="star1"><i class="fa-solid fa-star"></i></label>
                         </div>
-                    </div>
+                        
+                        <button type="submit" class="btn btn-primary" style="margin-top: 1.5rem; padding: 12px 30px; font-size: 1rem;">
+                            Envoyer ma note
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
