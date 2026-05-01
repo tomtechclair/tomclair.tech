@@ -3547,3 +3547,99 @@ body {
         padding: 40px 0;
     }
 }
+
+/* ===== MATRIX MODE STYLES ===== */
+
+/* Canvas plein écran pour l'effet Matrix */
+.matrix-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9998;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    display: none;
+}
+
+.matrix-canvas.active {
+    opacity: 1;
+    display: block;
+    pointer-events: auto;
+}
+
+/* Bouton toggle Matrix dans la navigation */
+.matrix-toggle {
+    background: transparent;
+    border: 1px solid rgba(0, 255, 65, 0.3);
+    color: #00ff41;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.matrix-toggle:hover {
+    background: rgba(0, 255, 65, 0.1);
+    border-color: #00ff41;
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
+}
+
+.matrix-toggle.active {
+    background: rgba(0, 255, 65, 0.2);
+    border-color: #00ff41;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+    color: #00ff41;
+}
+
+.matrix-toggle i {
+    font-size: 0.85rem;
+}
+
+/* Quand Matrix est actif, on réduit l'opacité du contenu */
+body.matrix-active .hero-content,
+body.matrix-active .hero-visual,
+body.matrix-active .features,
+body.matrix-active .tech-details,
+body.matrix-active .faq,
+body.matrix-active .contact-section,
+body.matrix-active .site-footer {
+    opacity: 0.3;
+    transition: opacity 0.5s ease;
+}
+
+body.matrix-active .navbar {
+    background: rgba(0, 0, 0, 0.9);
+    border-bottom: 1px solid rgba(0, 255, 65, 0.5);
+}
+
+/* Animation de clignotement pour le bouton quand actif */
+@keyframes matrixPulse {
+    0%, 100% { box-shadow: 0 0 15px rgba(0, 255, 65, 0.3); }
+    50% { box-shadow: 0 0 25px rgba(0, 255, 65, 0.6); }
+}
+
+.matrix-toggle.active {
+    animation: matrixPulse 2s infinite;
+}
+
+/* Responsive - Mobile */
+@media (max-width: 968px) {
+    .matrix-toggle {
+        font-size: 0.7rem;
+        padding: 5px 10px;
+    }
+    
+    .matrix-toggle span {
+        display: none; /* Cache le texte "Matrix" sur mobile, garde l'icône */
+    }
+}

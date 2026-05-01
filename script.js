@@ -7,6 +7,7 @@ window.addEventListener('load', () => {
     initMobileMenu();
     initFAQ();
     initContactForm();
+    initMatrixMode(); // Mode Matrix
 });
 
 // ===== TYPING EFFECT =====
@@ -331,6 +332,116 @@ function initMobileMenu() {
         if (!navToggle.contains(e.target) && !navLinks.contains(e.target)) {
             navToggle.classList.remove('active');
             navLinks.classList.remove('active');
+        }
+    });
+}
+
+// ===== MATRIX MODE =====
+function initMatrixMode() {
+    const canvas = document.getElementById('matrixCanvas');
+    const toggleBtn = document.getElementById('matrixToggle');
+    
+    if (!canvas || !toggleBtn) return;
+    
+    const ctx = canvas.getContext('2d');
+    let animationId = null;
+    let isActive = false;
+    
+    // Caractères pour l'effet Matrix (symboles, chiffres, lettres)
+    const matrixChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$+-*/=%\"'#&_(),.;:?!\\|{}<>[]^~";
+    const chars = matrixChars.split('');
+    
+    // Configuration
+    const fontSize = 14;
+    let columns = 0;
+    let drops = [];
+    
+    // Redimensionner le canvas
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        columns = Math.floor(canvas.width / fontSize);
+        drops = Array(columns).fill(1);
+    }
+    
+    // Dessiner l'effet Matrix
+    function drawMatrix() {
+        // Fond semi-transparent pour effet de traînée
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Couleur verte Matrix
+        ctx.fillStyle = '#00ff41';
+        ctx.font = `${fontSize}px monospace`;
+        
+        for (let i = 0; i < drops.length; i++) {
+            // Caractère aléatoire
+            const char = chars[Math.floor(Math.random() * chars.length)];
+            
+            // Dessiner le caractère
+            ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+            
+            // Réinitialiser la goutte si elle sort de l'écran ou aléatoirement
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+            
+            // Faire descendre la goutte
+            drops[i]++;
+        }
+    }
+    
+    // Boucle d'animation
+    function animate() {
+        if (!isActive) return;
+        drawMatrix();
+        animationId = requestAnimationFrame(animate);
+    }
+    
+    // Activer/Désactiver le mode Matrix
+    function toggleMatrix() {
+        isActive = !isActive;
+        
+        if (isActive) {
+            // Activer
+            canvas.classList.add('active');
+            toggleBtn.classList.add('active');
+            document.body.classList.add('matrix-active');
+            resizeCanvas();
+            animate();
+        } else {
+            // Désactiver
+            canvas.classList.remove('active');
+            toggleBtn.classList.remove('active');
+            document.body.classList.remove('matrix-active');
+            
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+            }
+            
+            // Nettoyer le canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+    }
+    
+    // Événements
+    toggleBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleMatrix();
+    });
+    
+    // Redimensionnement
+    window.addEventListener('resize', () => {
+        if (isActive) {
+            resizeCanvas();
+        }
+    });
+    
+    // Touche Échap pour désactiver
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && isActive) {
+            toggleMatrix();
         }
     });
 }
