@@ -1,5 +1,64 @@
-// ===== MAIN INITIALIZATION =====
-window.addEventListener('load', () => {
+// ===== MOBILE LOADING SCREEN =====
+function initMobileLoading() {
+    // Only show loading screen on mobile
+    if (window.innerWidth > 768) {
+        initRevealAnimation();
+        return;
+    }
+    
+    const loadingScreen = document.getElementById('mobileLoading');
+    const progressBar = document.querySelector('.progress-bar');
+    const progressText = document.querySelector('.progress-text');
+    const timerElement = document.getElementById('loadingTimer');
+    
+    if (!loadingScreen) return;
+    
+    let timeLeft = 10;
+    let progress = 0;
+    
+    const messages = [
+        "Initialisation...",
+        "Chargement des composants...",
+        "Configuration de Jarvis...",
+        "Préparation de l'interface...",
+        "Finalisation..."
+    ];
+    
+    const updateProgress = () => {
+        progress += 10;
+        progressBar.style.width = progress + '%';
+        progressText.textContent = messages[Math.floor(progress / 20)];
+    };
+    
+    const updateTimer = () => {
+        timeLeft--;
+        timerElement.textContent = timeLeft;
+        
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            clearInterval(progressInterval);
+            
+            // Hide loading screen
+            loadingScreen.style.opacity = '0';
+            loadingScreen.style.transition = 'opacity 0.5s ease';
+            
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+                // Initialize all content immediately
+                initAllContent();
+            }, 500);
+        }
+    };
+    
+    // Start timers
+    const timerInterval = setInterval(updateTimer, 1000);
+    const progressInterval = setInterval(updateProgress, 1000);
+    
+    // Initial progress
+    updateProgress();
+}
+
+function initAllContent() {
     initTypingEffect();
     initScrollProgress();
     initBackToTop();
@@ -7,7 +66,17 @@ window.addEventListener('load', () => {
     initMobileMenu();
     initFAQ();
     initContactForm();
-        initRevealAnimation();
+    
+    // Force all elements to be visible on mobile
+    const allElements = document.querySelectorAll('.reveal, .hero-content, .features-grid, .install-grid, .tech-grid, .faq-container, .contact-form, .section-header, .feature-card, .install-card, .tech-card, .faq-item, .trouble-item');
+    allElements.forEach(element => {
+        element.classList.add('active');
+    });
+}
+
+// ===== MAIN INITIALIZATION =====
+window.addEventListener('load', () => {
+    initMobileLoading();
 });
 
 // ===== TYPING EFFECT =====

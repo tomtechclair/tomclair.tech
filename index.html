@@ -4,13 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jarvis - Votre Assistant Intelligent</title>
-    <link rel="stylesheet" href="style.css?v=3">
+    <link rel="stylesheet" href="style.css?v=4">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
+    <!-- Mobile Loading Screen -->
+    <div class="mobile-loading" id="mobileLoading">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <span class="logo-text">tomclair</span><span class="logo-dot">.tech</span>
+            </div>
+            <div class="loading-title">Jarvis</div>
+            <div class="loading-subtitle">Votre assistant intelligent</div>
+            <div class="loading-progress">
+                <div class="progress-bar"></div>
+                <div class="progress-text">Initialisation...</div>
+            </div>
+            <div class="loading-timer" id="loadingTimer">10</div>
+        </div>
+    </div>
+
     <!-- Scroll Progress Bar -->
     <div class="scroll-progress" id="scrollProgress"></div>
 
@@ -518,6 +534,6 @@ python jarvis_agent.py
         </div>
     </footer>
 
-    <script src="script.js?v=3"></script>
+    <script src="script.js?v=4"></script>
 </body>
 </html>
