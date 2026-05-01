@@ -7,7 +7,8 @@ window.addEventListener('load', () => {
     initMobileMenu();
     initFAQ();
     initContactForm();
-initMatrixMode();
+    initMatrixMode();
+    initRevealAnimation();
 });
 
 // ===== TYPING EFFECT =====
@@ -101,28 +102,6 @@ function initNavbarScroll() {
         }
     });
     
-    const sections = document.querySelectorAll('section');
-    const navLinks = document.querySelectorAll('.nav-link');
-    
-    window.addEventListener('scroll', () => {
-        let current = '';
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop - 100;
-            if (window.pageYOffset >= sectionTop) {
-                current = section.getAttribute('id');
-            }
-        });
-        
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === '#' + current) {
-                link.classList.add('active');
-            }
-        });
-    });
-}
-    });
-    
     // Active link update on scroll
     const sections = document.querySelectorAll('section');
     const navLinks = document.querySelectorAll('.nav-link');
@@ -145,19 +124,28 @@ function initNavbarScroll() {
     });
 }
 
-// ===== FAQ LOGIC =====
+// ===== FAQ FUNCTIONALITY =====
 function initFAQ() {
     const faqItems = document.querySelectorAll('.faq-item');
+    
     faqItems.forEach(item => {
         const question = item.querySelector('.faq-question');
-        question.addEventListener('click', () => {
-            faqItems.forEach(other => {
-                if (other !== item) {
-                    other.classList.remove('active');
-                }
+        
+        if (question) {
+            question.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                // Close all other FAQ items
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+                
+                // Toggle current item
+                item.classList.toggle('active');
             });
-            item.classList.toggle('active');
-        });
+        }
     });
 }
 
@@ -167,12 +155,12 @@ function initContactForm() {
     if (!form) return;
     
     form.addEventListener('submit', async (e) => {
-        e.preventDefault(); 
+        e.preventDefault();
         
         const button = form.querySelector('button');
         const originalText = button.innerHTML;
         
-        button.innerHTML = '<span>ENVOI EN COURS...</span><div class="spinner"></div>';
+        button.innerHTML = '<span>ENVOI EN COURS...</span>';
         button.disabled = true;
         
         const formData = new FormData(form);
@@ -209,23 +197,130 @@ function initContactForm() {
     });
 }
 
-// ===== REVEAL ANIMATION =====
-const revealElements = document.querySelectorAll('.reveal');
-const revealOnScroll = () => {
-    revealElements.forEach(el => {
-        const rect = el.getBoundingClientRect();
-        if (rect.top < window.innerHeight - 50) {
-            el.classList.add('active');
+// ===== MOBILE MENU =====
+function initMobileMenu() {
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (!navToggle || !navLinks) return;
+    
+    navToggle.addEventListener('click', () => {
+        navToggle.classList.toggle('active');
+        navLinks.classList.toggle('active');
+    });
+    
+    document.addEventListener('click', (e) => {
+        if (!navToggle.contains(e.target) && !navLinks.contains(e.target)) {
+            navToggle.classList.remove('active');
+            navLinks.classList.remove('active');
         }
     });
-};
-window.addEventListener('scroll', revealOnScroll);
-window.addEventListener('load', revealOnScroll);
+}
+
+// ===== MATRIX MODE =====
+function initMatrixMode() {
+    const canvas = document.getElementById('matrixCanvas');
+    const toggleBtn = document.getElementById('matrixToggle');
+    
+    if (!canvas || !toggleBtn) return;
+    
+    const ctx = canvas.getContext('2d');
+    let animationId = null;
+    let isActive = false;
+    
+    // Caractères pour l'effet Matrix
+    const matrixChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$+-*/=%\"'#&_(),.;:?!\\|{}<>[]^~";
+    const chars = matrixChars.split('');
+    
+    const fontSize = 14;
+    let columns = 0;
+    let drops = [];
+    
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        columns = Math.floor(canvas.width / fontSize);
+        drops = Array(columns).fill(1);
+    }
+    
+    function drawMatrix() {
+        // Fond semi-transparent pour effet de traînée
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Couleur verte Matrix
+        ctx.fillStyle = '#00ff41';
+        ctx.font = `${fontSize}px monospace`;
+        
+        for (let i = 0; i < drops.length; i++) {
+            // Caractère aléatoire
+            const char = chars[Math.floor(Math.random() * chars.length)];
+            
+            // Dessiner le caractère
+            ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+            
+            // Réinitialiser la goutte si elle sort de l'écran ou aléatoirement
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+            
+            // Faire descendre la goutte
+            drops[i]++;
+        }
+    }
+    
+    function animate() {
+        if (!isActive) return;
+        drawMatrix();
+        animationId = requestAnimationFrame(animate);
+    }
+    
+    function toggleMatrix() {
+        isActive = !isActive;
+        
+        if (isActive) {
+            canvas.classList.add('active');
+            toggleBtn.classList.add('active');
+            resizeCanvas();
+            animate();
+        } else {
+            canvas.classList.remove('active');
+            toggleBtn.classList.remove('active');
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+    }
+    
+    toggleBtn.addEventListener('click', toggleMatrix);
+    window.addEventListener('resize', resizeCanvas);
+}
+
+// ===== REVEAL ANIMATION =====
+function initRevealAnimation() {
+    const revealElements = document.querySelectorAll('.reveal');
+    
+    const revealOnScroll = () => {
+        revealElements.forEach(element => {
+            const elementTop = element.getBoundingClientRect().top;
+            const elementVisible = 150;
+            
+            if (elementTop < window.innerHeight - elementVisible) {
+                element.classList.add('active');
+            }
+        });
+    };
+    
+    revealOnScroll();
+    window.addEventListener('scroll', revealOnScroll);
+}
 
 // ===== NEURAL BACKGROUND ANIMATION =====
 const neuralCanvas = document.getElementById('neuralBg');
 if (neuralCanvas) {
     const ctx = neuralCanvas.getContext('2d');
+    
     let particles = [];
     
     function initNeuralBg() {
@@ -296,6 +391,8 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 block: 'start'
             });
         }
+        
+        // Close mobile menu if open
         const navToggle = document.getElementById('navToggle');
         const navLinks = document.querySelector('.nav-links');
         if (navToggle && navLinks) {
@@ -304,184 +401,3 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
-
-// ===== MOBILE MENU =====
-function initMobileMenu() {
-    const navToggle = document.getElementById('navToggle');
-    const navLinks = document.querySelector('.nav-links');
-    
-    if (!navToggle || !navLinks) return;
-    
-    navToggle.addEventListener('click', () => {
-        navToggle.classList.toggle('active');
-        navLinks.classList.toggle('active');
-    });
-    
-    document.addEventListener('click', (e) => {
-        if (!navToggle.contains(e.target) && !navLinks.contains(e.target)) {
-            navToggle.classList.remove('active');
-            navLinks.classList.remove('active');
-        }
-    });
-}
-
-// ===== MATRIX MODE =====
-function initMatrixMode() {
-    const canvas = document.getElementById('matrixCanvas');
-    const toggleBtn = document.getElementById('matrixToggle');
-    
-    if (!canvas || !toggleBtn) return;
-    
-    const ctx = canvas.getContext('2d');
-    let animationId = null;
-    let isActive = false;
-    
-<<<<<<< HEAD
-    const matrixChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$+-*/=%\"'#&_(),.;:?!\\|{}<>[]^~";
-    const chars = matrixChars.split('');
-    
-=======
-    // Caractères pour l'effet Matrix (symboles, chiffres, lettres)
-    const matrixChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$+-*/=%\"'#&_(),.;:?!\\|{}<>[]^~";
-    const chars = matrixChars.split('');
-    
-    // Configuration
->>>>>>> fe83ffc247c44f45d97af55897074314072a4772
-    const fontSize = 14;
-    let columns = 0;
-    let drops = [];
-    
-<<<<<<< HEAD
-=======
-    // Redimensionner le canvas
->>>>>>> fe83ffc247c44f45d97af55897074314072a4772
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        columns = Math.floor(canvas.width / fontSize);
-        drops = Array(columns).fill(1);
-    }
-    
-<<<<<<< HEAD
-    function drawMatrix() {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        
-        ctx.fillStyle = '#00ff41';
-        ctx.font = fontSize + 'px monospace';
-        
-        for (let i = 0; i < drops.length; i++) {
-            const char = chars[Math.floor(Math.random() * chars.length)];
-            
-            ctx.fillText(char, i * fontSize, drops[i] * fontSize);
-            
-=======
-    // Dessiner l'effet Matrix
-    function drawMatrix() {
-        // Fond semi-transparent pour effet de traînée
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        
-        // Couleur verte Matrix
-        ctx.fillStyle = '#00ff41';
-        ctx.font = `${fontSize}px monospace`;
-        
-        for (let i = 0; i < drops.length; i++) {
-            // Caractère aléatoire
-            const char = chars[Math.floor(Math.random() * chars.length)];
-            
-            // Dessiner le caractère
-            ctx.fillText(char, i * fontSize, drops[i] * fontSize);
-            
-            // Réinitialiser la goutte si elle sort de l'écran ou aléatoirement
->>>>>>> fe83ffc247c44f45d97af55897074314072a4772
-            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                drops[i] = 0;
-            }
-            
-<<<<<<< HEAD
-=======
-            // Faire descendre la goutte
->>>>>>> fe83ffc247c44f45d97af55897074314072a4772
-            drops[i]++;
-        }
-    }
-    
-<<<<<<< HEAD
-=======
-    // Boucle d'animation
->>>>>>> fe83ffc247c44f45d97af55897074314072a4772
-    function animate() {
-        if (!isActive) return;
-        drawMatrix();
-        animationId = requestAnimationFrame(animate);
-    }
-    
-<<<<<<< HEAD
-=======
-    // Activer/Désactiver le mode Matrix
->>>>>>> fe83ffc247c44f45d97af55897074314072a4772
-    function toggleMatrix() {
-        isActive = !isActive;
-        
-        if (isActive) {
-<<<<<<< HEAD
-=======
-            // Activer
->>>>>>> fe83ffc247c44f45d97af55897074314072a4772
-            canvas.classList.add('active');
-            toggleBtn.classList.add('active');
-            document.body.classList.add('matrix-active');
-            resizeCanvas();
-            animate();
-        } else {
-<<<<<<< HEAD
-=======
-            // Désactiver
->>>>>>> fe83ffc247c44f45d97af55897074314072a4772
-            canvas.classList.remove('active');
-            toggleBtn.classList.remove('active');
-            document.body.classList.remove('matrix-active');
-            
-            if (animationId) {
-                cancelAnimationFrame(animationId);
-                animationId = null;
-            }
-            
-<<<<<<< HEAD
-=======
-            // Nettoyer le canvas
->>>>>>> fe83ffc247c44f45d97af55897074314072a4772
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-        }
-    }
-    
-<<<<<<< HEAD
-=======
-    // Événements
->>>>>>> fe83ffc247c44f45d97af55897074314072a4772
-    toggleBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        toggleMatrix();
-    });
-    
-<<<<<<< HEAD
-=======
-    // Redimensionnement
->>>>>>> fe83ffc247c44f45d97af55897074314072a4772
-    window.addEventListener('resize', () => {
-        if (isActive) {
-            resizeCanvas();
-        }
-    });
-    
-<<<<<<< HEAD
-=======
-    // Touche Échap pour désactiver
->>>>>>> fe83ffc247c44f45d97af55897074314072a4772
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && isActive) {
-            toggleMatrix();
-        }
-    });
-}
