@@ -458,77 +458,7 @@ body {
     text-shadow: 0 0 10px var(--accent-glow);
 }
 
-/* Mini-Jeu dans la nav */
-.nav-game {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 16px;
-    background: var(--glass-gradient);
-    border: 1px solid var(--glass-border);
-    border-radius: 12px;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    transition: var(--transition);
-}
-
-.nav-game:hover {
-    border-color: rgba(0, 210, 255, 0.4);
-    box-shadow: var(--shadow-glow);
-}
-
-.game-label {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    font-weight: 600;
-    letter-spacing: 1px;
-}
-
-.game-code {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--accent-color);
-    letter-spacing: 3px;
-    text-shadow: 0 0 15px rgba(0, 210, 255, 0.5);
-    min-width: 60px;
-    text-align: center;
-}
-
-.game-input {
-    width: 70px;
-    padding: 6px 10px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--glass-border);
-    border-radius: 6px;
-    color: var(--text-primary);
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-    text-align: center;
-    letter-spacing: 2px;
-    transition: var(--transition);
-}
-
-.game-input:focus {
-    outline: none;
-    border-color: var(--accent-color);
-    box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
-    background: rgba(0, 210, 255, 0.05);
-}
-
-.game-input::placeholder {
-    color: var(--text-muted);
-    font-size: 0.8rem;
-}
-
-.game-score {
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-    font-weight: 600;
-    white-space: nowrap;
-}
-
+/* Navigation Mobile Toggle */
 .nav-toggle {
     display: none;
     flex-direction: column;

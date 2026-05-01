@@ -7,7 +7,6 @@ window.addEventListener('load', () => {
     initMobileMenu();
     initFAQ();
     initContactForm();
-    initNavGame();
 });
 
 // ===== TYPING EFFECT =====
@@ -87,58 +86,6 @@ function initBackToTop() {
             behavior: 'smooth'
         });
     });
-}
-
-// ===== NAV GAME - Tape le Code Jarvis =====
-function initNavGame() {
-    const gameCode = document.getElementById('gameCode');
-    const gameInput = document.getElementById('gameInput');
-    const gameScore = document.getElementById('gameScore');
-    
-    if (!gameCode || !gameInput || !gameScore) return;
-    
-    let score = 0;
-    let currentCode = '';
-    
-    // Générer un code aléatoire à 4 chiffres
-    function generateCode() {
-        currentCode = Math.floor(1000 + Math.random() * 9000).toString();
-        gameCode.textContent = currentCode;
-        gameInput.value = '';
-        gameInput.focus();
-    }
-    
-    // Vérifier la réponse
-    gameInput.addEventListener('input', () => {
-        const userInput = gameInput.value;
-        
-        if (userInput === currentCode) {
-            // Gagné !
-            score++;
-            gameScore.textContent = 'Score: ' + score;
-            gameInput.style.borderColor = '#10b981';
-            gameInput.style.boxShadow = '0 0 20px rgba(16, 185, 129, 0.5)';
-            
-            setTimeout(() => {
-                gameInput.style.borderColor = '';
-                gameInput.style.boxShadow = '';
-                generateCode();
-            }, 1000);
-        } else if (userInput.length >= 4) {
-            // Perdu
-            gameInput.style.borderColor = '#ff5f56';
-            gameInput.style.boxShadow = '0 0 20px rgba(255, 95, 86, 0.5)';
-            
-            setTimeout(() => {
-                gameInput.style.borderColor = '';
-                gameInput.style.boxShadow = '';
-                gameInput.value = '';
-            }, 800);
-        }
-    });
-    
-    // Générer le premier code
-    generateCode();
 }
 
 // ===== NAVBAR SCROLL EFFECT =====
