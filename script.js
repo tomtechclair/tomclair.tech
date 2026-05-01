@@ -1,8 +1,5 @@
 // ===== MAIN INITIALIZATION =====
 window.addEventListener('load', () => {
-    initPreloader();
-    initCustomCursor();
-    initFloatingParticles();
     initFAQ();
     initContactForm();
     initTypingEffect();
@@ -11,98 +8,6 @@ window.addEventListener('load', () => {
     initNavbarScroll();
     initMobileMenu();
 });
-
-// ===== PRELOADER =====
-function initPreloader() {
-    const preloader = document.getElementById('preloader');
-    const progressBar = document.querySelector('.preloader-progress');
-    
-    if (!preloader) return;
-    
-    let progress = 0;
-    const interval = setInterval(() => {
-        progress += Math.random() * 30;
-        if (progress > 100) progress = 100;
-        if (progressBar) progressBar.style.width = progress + '%';
-        
-        if (progress >= 100) {
-            clearInterval(interval);
-            setTimeout(() => {
-                preloader.classList.add('fade-out');
-                setTimeout(() => {
-                    preloader.style.display = 'none';
-                }, 800);
-            }, 500);
-        }
-    }, 200);
-}
-
-// ===== CUSTOM CURSOR =====
-function initCustomCursor() {
-    const cursorDot = document.getElementById('cursorDot');
-    const cursorOutline = document.getElementById('cursorOutline');
-    
-    if (!cursorDot || !cursorOutline) return;
-    
-    let mouseX = 0, mouseY = 0;
-    let outlineX = 0, outlineY = 0;
-    
-    document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        cursorDot.style.left = mouseX + 'px';
-        cursorDot.style.top = mouseY + 'px';
-    });
-    
-    function animateCursor() {
-        outlineX += (mouseX - outlineX) * 0.15;
-        outlineY += (mouseY - outlineY) * 0.15;
-        cursorOutline.style.left = outlineX + 'px';
-        cursorOutline.style.top = outlineY + 'px';
-        requestAnimationFrame(animateCursor);
-    }
-    animateCursor();
-    
-    // Hover effects
-    const interactiveElements = document.querySelectorAll('a, button, .nav-toggle, input, textarea');
-    interactiveElements.forEach(el => {
-        el.addEventListener('mouseenter', () => {
-            cursorOutline.classList.add('hover');
-        });
-        el.addEventListener('mouseleave', () => {
-            cursorOutline.classList.remove('hover');
-        });
-    });
-}
-
-// ===== FLOATING PARTICLES =====
-function initFloatingParticles() {
-    const container = document.getElementById('particlesContainer');
-    if (!container) return;
-    
-    function createParticle() {
-        const particle = document.createElement('div');
-        particle.className = 'floating-particle';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.animationDuration = (Math.random() * 15 + 15) + 's';
-        particle.style.animationDelay = Math.random() * 5 + 's';
-        particle.style.opacity = Math.random() * 0.5 + 0.2;
-        particle.style.width = particle.style.height = (Math.random() * 4 + 2) + 'px';
-        container.appendChild(particle);
-        
-        setTimeout(() => {
-            particle.remove();
-        }, 25000);
-    }
-    
-    // Create initial particles
-    for (let i = 0; i < 20; i++) {
-        setTimeout(() => createParticle(), i * 200);
-    }
-    
-    // Create new particles periodically
-    setInterval(createParticle, 1500);
-}
 
 // ===== TYPING EFFECT =====
 function initTypingEffect() {
