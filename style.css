@@ -54,21 +54,6 @@ body {
     transition: width 0.1s ease;
 }
 
-/* Matrix Canvas */
-.matrix-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
-
-.matrix-canvas.active {
-    opacity: 1;
-}
 
 /* Navigation */
 .navbar {
@@ -150,25 +135,6 @@ body {
     width: 100%;
 }
 
-.matrix-toggle {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    color: var(--text-secondary);
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    transition: var(--transition-fast);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.9rem;
-}
-
-.matrix-toggle:hover {
-    background: var(--glass-bg-hover);
-    color: var(--accent-color);
-    border-color: var(--accent-color);
-}
 
 .nav-toggle {
     display: none;
@@ -1075,6 +1041,24 @@ body {
 }
 
 /* Responsive Design */
+@media (max-width: 1200px) {
+    .container {
+        padding: 0 1.5rem;
+    }
+    
+    .hero-title {
+        font-size: clamp(2.5rem, 6vw, 4rem);
+    }
+    
+    .tech-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+    
+    .install-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+}
+
 @media (max-width: 768px) {
     .nav-links {
         position: fixed;
@@ -1090,6 +1074,7 @@ body {
         visibility: hidden;
         transition: var(--transition);
         border-bottom: 1px solid var(--glass-border);
+        gap: 1rem;
     }
 
     .nav-links.active {
@@ -1114,31 +1099,241 @@ body {
         transform: rotate(-45deg) translate(7px, -6px);
     }
 
-    .hero-stats {
-        gap: 1rem;
+    /* Hero Section Mobile */
+    .hero {
+        min-height: 100vh;
+        padding: 2rem 0;
     }
-
+    
+    .hero-content {
+        padding: 0 1rem;
+    }
+    
+    .hero-title {
+        font-size: clamp(2rem, 8vw, 3rem);
+        margin-bottom: 1rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .hero-stats {
+        gap: 0.75rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+    }
+    
+    .stat-item {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+    
     .hero-actions {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
+        gap: 1rem;
+        margin-bottom: 2rem;
     }
-
+    
+    .btn {
+        padding: 0.875rem 1.5rem;
+        text-align: center;
+        justify-content: center;
+    }
+    
     .hero-socials {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
+        gap: 0.75rem;
+        margin-bottom: 2rem;
     }
-
+    
     .hero-visual {
         display: none;
     }
-
-    .features-grid {
-        grid-template-columns: 1fr;
+    
+    .scroll-indicator {
+        bottom: 1rem;
     }
 
+    /* Features Mobile */
+    .features {
+        padding: 4rem 0;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .feature-card {
+        padding: 1.5rem;
+    }
+
+    /* Installation Mobile */
+    .install {
+        padding: 4rem 0;
+    }
+    
+    .install-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .install-card {
+        border-radius: 0.75rem;
+    }
+    
+    .install-step {
+        padding: 1rem;
+    }
+    
+    .step-number {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+    
+    .install-step h3 {
+        font-size: 1rem;
+    }
+    
+    .install-content {
+        padding: 1.5rem;
+    }
+    
+    .code-block pre {
+        padding: 1rem;
+        font-size: 0.8rem;
+    }
+    
+    .troubleshoot-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    /* Tech Mobile */
+    .tech {
+        padding: 4rem 0;
+    }
+    
+    .tech-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .tech-card {
+        padding: 1.5rem;
+    }
+    
+    .tech-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
+
+    /* FAQ Mobile */
+    .faq {
+        padding: 4rem 0;
+    }
+    
+    .faq-question {
+        padding: 1rem;
+    }
+    
+    .faq-question h3 {
+        font-size: 1rem;
+    }
+    
+    .faq-answer p {
+        padding: 0 1rem 1rem;
+    }
+
+    /* Contact Mobile */
+    .contact-section {
+        padding: 4rem 0;
+    }
+    
+    .contact-form {
+        padding: 0 1rem;
+    }
+    
+    .form-group input,
+    .form-group textarea {
+        padding: 0.875rem;
+    }
+
+    /* Footer Mobile */
+    .site-footer {
+        padding: 2rem 0;
+    }
+    
     .footer-content {
         flex-direction: column;
         text-align: center;
+        gap: 2rem;
+    }
+    
+    .footer-links {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 1rem;
+    }
+    
+    .hero {
+        padding: 1rem 0;
+    }
+    
+    .hero-content {
+        padding: 0 0.5rem;
+    }
+    
+    .section-title {
+        font-size: clamp(1.5rem, 5vw, 2rem);
+    }
+    
+    .features,
+    .install,
+    .tech,
+    .faq,
+    .contact-section {
+        padding: 3rem 0;
+    }
+    
+    .feature-card,
+    .install-card,
+    .tech-card {
+        padding: 1rem;
+    }
+    
+    .install-content {
+        padding: 1rem;
+    }
+    
+    .code-block pre {
+        padding: 0.75rem;
+        font-size: 0.75rem;
+        overflow-x: auto;
+    }
+    
+    .btn {
+        padding: 0.75rem 1.25rem;
+        font-size: 0.9rem;
+    }
+    
+    .nav-container {
+        padding: 0 1rem;
+    }
+    
+    .install-troubleshoot {
+        padding: 1.5rem;
     }
 }
 
