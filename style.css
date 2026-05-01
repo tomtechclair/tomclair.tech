@@ -904,9 +904,9 @@ section:last-of-type::after {
     color: var(--text-primary);
 }
 
-/* Testimonials Section - Améliorée */
-.testimonials {
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 210, 255, 0.02) 50%, rgba(0, 0, 0, 0.4) 100%);
+/* FAQ Section - Améliorée */
+.faq {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 210, 255, 0.02) 50%, rgba(0, 0, 0, 0.3) 100%);
     position: relative;
     overflow: hidden;
 }
