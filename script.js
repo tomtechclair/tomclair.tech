@@ -755,7 +755,6 @@ function initAllContent() {
     initScrollEffects();
     initAnimations();
     initOneSignal();
-    initUserCounter();
 }
 
 // ===== NAVBAR SCROLL =====
