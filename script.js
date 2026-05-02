@@ -120,54 +120,102 @@ function initContactForm() {
         button.disabled = true;
         
         const formData = new FormData(form);
+        const name = formData.get('name');
+        const email = formData.get('email');
+        const subject = formData.get('subject');
+        const message = formData.get('message');
         
         try {
-            // Envoyer via Formspree directement avec configuration correcte
-            const response = await fetch('https://formspree.io/f/xjvqzvqj', {
+            // Solution 1: Essayer Formspree avec FormData
+            const response1 = await fetch('https://formspree.io/f/xjvqzvqj', {
                 method: 'POST',
-                body: JSON.stringify({
-                    name: formData.get('name'),
-                    email: formData.get('email'),
-                    subject: formData.get('subject'),
-                    message: formData.get('message'),
-                    _replyto: formData.get('email')
-                }),
+                body: formData,
                 headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    'Accept': 'application/json'
                 }
             });
             
-            if (response.ok) {
+            if (response1.ok) {
                 // Succès
                 button.innerHTML = '<i class="fa-solid fa-check"></i> <span>Message envoyé avec succès!</span>';
                 button.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
                 form.reset();
                 
-                // Réinitialiser après 3 secondes
                 setTimeout(() => {
                     button.innerHTML = originalHTML;
                     button.style.background = '';
                     button.disabled = false;
                 }, 3000);
-            } else {
-                throw new Error('Erreur lors de l\'envoi');
+                return;
             }
-        } catch (error) {
-            console.error('Erreur:', error);
             
-            // Afficher l'erreur
-            button.innerHTML = '<i class="fa-solid fa-exclamation-triangle"></i> <span>Erreur - Réessayez</span>';
-            button.style.background = 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)';
+            // Solution 2: Utiliser EmailJS (fallback)
+            await sendEmailWithWeb3Email(name, email, subject, message);
             
-            // Réinitialiser après 3 secondes
+            button.innerHTML = '<i class="fa-solid fa-check"></i> <span>Message envoyé avec succès!</span>';
+            button.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+            form.reset();
+            
             setTimeout(() => {
                 button.innerHTML = originalHTML;
                 button.style.background = '';
                 button.disabled = false;
             }, 3000);
+            
+        } catch (error) {
+            console.error('Erreur:', error);
+            
+            // Solution 3: Créer un email mailto comme dernier recours
+            const mailtoLink = `mailto:tom16112008@gmail.com?subject=${encodeURIComponent(`[Jarvis Site] ${subject}`)}&body=${encodeURIComponent(
+                `Nom: ${name}\nEmail: ${email}\n\nMessage:\n${message}\n\n---\nEnvoyé depuis le site tomclair.tech`
+            )}`;
+            
+            button.innerHTML = '<i class="fa-solid fa-envelope"></i> <span>Ouverture client email...</span>';
+            button.style.background = 'linear-gradient(135deg, #0066ff 0%, #00d4ff 100%)';
+            
+            setTimeout(() => {
+                window.location.href = mailtoLink;
+                
+                setTimeout(() => {
+                    button.innerHTML = '<i class="fa-solid fa-check"></i> <span>Prêt à envoyer!</span>';
+                    button.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+                    
+                    setTimeout(() => {
+                        button.innerHTML = originalHTML;
+                        button.style.background = '';
+                        button.disabled = false;
+                        form.reset();
+                    }, 2000);
+                }, 1000);
+            }, 500);
         }
     });
+}
+
+// Solution alternative avec Web3Forms (gratuit)
+async function sendEmailWithWeb3Email(name, email, subject, message) {
+    const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+            access_key: 'YOUR_ACCESS_KEY', // À remplacer avec une vraie clé
+            name: name,
+            email: email,
+            subject: `[Jarvis Site] ${subject}`,
+            message: message,
+            from_name: name,
+            replyto: email
+        })
+    });
+    
+    if (!response.ok) {
+        throw new Error('Web3Forms failed');
+    }
+    
+    return response.json();
 }
 
 
