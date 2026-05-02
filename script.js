@@ -1599,14 +1599,33 @@ function initMobileDownloadMessage() {
     const downloadBtn = document.querySelector('a[href="JARVIS_Setup_v3.5.exe"]');
     if (!downloadBtn) return;
     
-    // Change button appearance on mobile
+    // Completely block download access
     downloadBtn.classList.add('mobile-download');
-    downloadBtn.innerHTML = '<i class="fa-solid fa-download"></i> <span>Télécharger (Bientôt disponible)</span>';
+    downloadBtn.innerHTML = '<i class="fa-solid fa-lock"></i> <span>Indisponible sur mobile</span>';
+    downloadBtn.style.pointerEvents = 'none';
+    downloadBtn.style.cursor = 'not-allowed';
+    downloadBtn.setAttribute('href', '#');
+    downloadBtn.removeAttribute('download');
     
     // Add click event to show message
     downloadBtn.addEventListener('click', (e) => {
         e.preventDefault();
+        e.stopPropagation();
         showMobileDownloadMessage();
+        return false;
+    });
+    
+    // Also block any right-click or long-press
+    downloadBtn.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        return false;
+    });
+    
+    // Block touch events that might trigger download
+    downloadBtn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        showMobileDownloadMessage();
+        return false;
     });
 }
 
