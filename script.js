@@ -1,7 +1,323 @@
-// ===== MOBILE LOADING SCREEN =====
+// ===== MOBILE MAINTENANCE SCREEN =====
 function initMobileLoading() {
-    // Skip loading screen completely - initialize immediately
-    initAllContent();
+    // Check if it's mobile and show maintenance page
+    if (window.innerWidth <= 768) {
+        showMaintenancePage();
+    } else {
+        initAllContent();
+    }
+}
+
+function showMaintenancePage() {
+    // Hide all content
+    document.body.innerHTML = `
+        <div class="maintenance-container">
+            <div class="maintenance-content">
+                <div class="maintenance-logo">
+                    <span class="logo-text">tomclair</span><span class="logo-dot">.tech</span>
+                </div>
+                <div class="maintenance-title">Jarvis</div>
+                <div class="maintenance-subtitle">Mode Maintenance</div>
+                
+                <div class="maintenance-message">
+                    <h2>🔧 Mise à jour en cours</h2>
+                    <p>Le site est actuellement en maintenance pour une mise à jour majeure.</p>
+                    <p>Nous améliorons votre expérience Jarvis!</p>
+                </div>
+                
+                <div class="countdown-container">
+                    <h3>🕐 Reprise prévue</h3>
+                    <div class="countdown" id="maintenanceCountdown">
+                        <div class="countdown-item">
+                            <span class="countdown-value" id="hours">00</span>
+                            <span class="countdown-label">Heures</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-value" id="minutes">00</span>
+                            <span class="countdown-label">Minutes</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-value" id="seconds">00</span>
+                            <span class="countdown-label">Secondes</span>
+                        </div>
+                    </div>
+                    <p class="target-time">Aujourd'hui à 17H30</p>
+                </div>
+                
+                <div class="maintenance-features">
+                    <h3>🚀 Nouveautés attendues</h3>
+                    <ul>
+                        <li>⚡ Performance améliorée</li>
+                        <li>🎨 Design modernisé</li>
+                        <li>📱 Expérience mobile optimisée</li>
+                        <li>🔧 Nouvelles fonctionnalités Jarvis</li>
+                    </ul>
+                </div>
+                
+                <div class="maintenance-contact">
+                    <p>Questions? Contactez-nous:</p>
+                    <a href="mailto:tom16112008@gmail.com" class="contact-link">
+                        <i class="fa-solid fa-envelope"></i>
+                        tom16112008@gmail.com
+                    </a>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Start countdown
+    startMaintenanceCountdown();
+    
+    // Add maintenance styles
+    addMaintenanceStyles();
+}
+
+function startMaintenanceCountdown() {
+    // Set target time to today at 17:30
+    const now = new Date();
+    const targetTime = new Date();
+    targetTime.setHours(17, 30, 0, 0);
+    
+    // If 17:30 has passed, set to tomorrow
+    if (now > targetTime) {
+        targetTime.setDate(targetTime.getDate() + 1);
+    }
+    
+    function updateCountdown() {
+        const currentTime = new Date();
+        const difference = targetTime - currentTime;
+        
+        if (difference > 0) {
+            const hours = Math.floor(difference / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+            
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+        } else {
+            // Countdown finished - reload page
+            document.getElementById('hours').textContent = '00';
+            document.getElementById('minutes').textContent = '00';
+            document.getElementById('seconds').textContent = '00';
+            
+            // Show completion message
+            setTimeout(() => {
+                location.reload();
+            }, 5000);
+        }
+    }
+    
+    // Update immediately
+    updateCountdown();
+    
+    // Update every second
+    setInterval(updateCountdown, 1000);
+}
+
+function addMaintenanceStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .maintenance-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .maintenance-content {
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        .maintenance-logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+        
+        .logo-text {
+            color: #0066ff;
+        }
+        
+        .logo-dot {
+            color: #00d4ff;
+        }
+        
+        .maintenance-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+        
+        .maintenance-subtitle {
+            font-size: 1rem;
+            color: #00d4ff;
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+        
+        .maintenance-message {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .maintenance-message h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #f59e0b;
+        }
+        
+        .maintenance-message p {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #a0a0a0;
+            margin-bottom: 0.5rem;
+        }
+        
+        .countdown-container {
+            background: rgba(0, 102, 255, 0.1);
+            border: 1px solid rgba(0, 102, 255, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .countdown-container h3 {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            color: #0066ff;
+        }
+        
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .countdown-item {
+            text-align: center;
+            min-width: 60px;
+        }
+        
+        .countdown-value {
+            display: block;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #00d4ff;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 8px;
+            padding: 0.5rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .countdown-label {
+            font-size: 0.7rem;
+            color: #a0a0a0;
+            text-transform: uppercase;
+        }
+        
+        .target-time {
+            font-size: 0.9rem;
+            color: #f59e0b;
+            font-weight: 500;
+        }
+        
+        .maintenance-features {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+        
+        .maintenance-features h3 {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            color: #10b981;
+            text-align: center;
+        }
+        
+        .maintenance-features ul {
+            list-style: none;
+        }
+        
+        .maintenance-features li {
+            font-size: 0.85rem;
+            color: #a0a0a0;
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .maintenance-contact {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+        
+        .maintenance-contact p {
+            font-size: 0.9rem;
+            color: #a0a0a0;
+            margin-bottom: 0.5rem;
+        }
+        
+        .contact-link {
+            color: #0066ff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 102, 255, 0.1);
+            border: 1px solid rgba(0, 102, 255, 0.3);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-link:hover {
+            background: rgba(0, 102, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .countdown-value {
+            animation: pulse 1s ease-in-out infinite;
+        }
+    `;
+    document.head.appendChild(style);
 }
 
 function initAllContent() {
