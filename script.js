@@ -1581,7 +1581,6 @@ function initMobileSwipeBlock() {
     
     // Force body to stay in place
     document.body.style.overflowX = 'hidden';
-    document.body.style.position = 'relative';
     document.body.style.width = '100%';
     document.body.style.maxWidth = '100vw';
     
