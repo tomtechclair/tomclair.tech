@@ -756,6 +756,7 @@ function initAllContent() {
     initAnimations();
     initOneSignal();
     initMobileSwipeBlock();
+    initMobileDownloadMessage();
 }
 
 // ===== NAVBAR SCROLL =====
@@ -1589,6 +1590,64 @@ function initMobileSwipeBlock() {
     
     // Add touch action for better control
     document.body.style.touchAction = 'pan-y';
+}
+
+// ===== MOBILE DOWNLOAD MESSAGE =====
+function initMobileDownloadMessage() {
+    // Only apply on mobile devices
+    if (window.innerWidth > 768) return;
+    
+    const downloadBtn = document.querySelector('a[href="JARVIS_Setup_v3.5.exe"]');
+    if (!downloadBtn) return;
+    
+    // Change button appearance on mobile
+    downloadBtn.classList.add('mobile-download');
+    downloadBtn.innerHTML = '<i class="fa-solid fa-download"></i> <span>Télécharger (Bientôt disponible)</span>';
+    
+    // Add click event to show message
+    downloadBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        showMobileDownloadMessage();
+    });
+}
+
+function showMobileDownloadMessage() {
+    // Create message overlay
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'mobile-download-message';
+    messageDiv.innerHTML = `
+        <h3>📱 Bientôt disponible sur mobile !</h3>
+        <p>
+            Je suis Tom, et je travaille actuellement à optimiser Jarvis pour les appareils mobiles. 
+            La version mobile sera bientôt disponible avec toutes les fonctionnalités que vous aimez.
+        </p>
+        <p>
+            Merci de votre patience et de votre intérêt pour mon projet !
+        </p>
+        <div class="signature">- Tom, Fondateur de Jarvis</div>
+        <button class="mobile-download-close" onclick="this.parentElement.remove()">
+            J'ai compris
+        </button>
+    `;
+    
+    // Add to page
+    document.body.appendChild(messageDiv);
+    
+    // Auto-remove after 10 seconds
+    setTimeout(() => {
+        if (messageDiv.parentElement) {
+            messageDiv.remove();
+        }
+    }, 10000);
+    
+    // Close on escape key
+    const escapeHandler = (e) => {
+        if (e.key === 'Escape' && messageDiv.parentElement) {
+            messageDiv.remove();
+            document.removeEventListener('keydown', escapeHandler);
+        }
+    };
+    document.addEventListener('keydown', escapeHandler);
 }
 
 // ===== CONSOLE LOGO =====

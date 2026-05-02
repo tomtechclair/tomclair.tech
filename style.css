@@ -1971,6 +1971,70 @@ section {
         font-size: 1rem;
     }
     
+    .btn.mobile-download {
+        background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+        cursor: default;
+        position: relative;
+    }
+    
+    .btn.mobile-download:hover {
+        transform: none;
+        box-shadow: none;
+    }
+    
+    .mobile-download-message {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: linear-gradient(135deg, rgba(10, 14, 39, 0.98) 0%, rgba(26, 31, 58, 0.98) 100%);
+        border: 2px solid rgba(0, 102, 255, 0.3);
+        border-radius: 16px;
+        padding: 2rem;
+        max-width: 90%;
+        width: 350px;
+        text-align: center;
+        z-index: 10000;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+    
+    .mobile-download-message h3 {
+        color: var(--primary-color);
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        font-family: 'Orbitron', monospace;
+    }
+    
+    .mobile-download-message p {
+        color: var(--text-primary);
+        font-size: 1rem;
+        line-height: 1.5;
+        margin-bottom: 1.5rem;
+    }
+    
+    .mobile-download-message .signature {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        font-style: italic;
+    }
+    
+    .mobile-download-close {
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        cursor: pointer;
+        margin-top: 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .mobile-download-close:hover {
+        background: var(--accent-color);
+    }
+    
     .hero-visual {
         display: none;
     }
