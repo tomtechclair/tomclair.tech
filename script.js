@@ -758,6 +758,7 @@ function initAllContent() {
     initMobileSwipeBlock();
     initMobileDownloadMessage();
     initMobileMenuToggle();
+    initJarvisGame();
 }
 
 // ===== NAVBAR SCROLL =====
@@ -1689,6 +1690,260 @@ function initMobileMenuToggle() {
             });
         }
     });
+}
+
+// ===== JARVIS MINI GAME =====
+function initJarvisGame() {
+    const gameStartBtn = document.getElementById('gameStartBtn');
+    const gameGrid = document.getElementById('gameGrid');
+    const gameMessage = document.getElementById('gameMessage');
+    const gameScore = document.getElementById('gameScore');
+    const gameLevel = document.getElementById('gameLevel');
+    const gameLives = document.getElementById('gameLives');
+    const gameResetBtn = document.getElementById('gameResetBtn');
+    const gameSoundBtn = document.getElementById('gameSoundBtn');
+    
+    if (!gameStartBtn || !gameGrid || !gameMessage) return;
+    
+    let sequence = [];
+    let playerSequence = [];
+    let score = 0;
+    let level = 1;
+    let lives = 3;
+    let isPlaying = false;
+    let soundEnabled = true;
+    
+    // Game tiles
+    const tiles = {
+        red: document.getElementById('tileRed'),
+        blue: document.getElementById('tileBlue'),
+        green: document.getElementById('tileGreen'),
+        yellow: document.getElementById('tileYellow')
+    };
+    
+    // Start game
+    gameStartBtn.addEventListener('click', startGame);
+    gameResetBtn.addEventListener('click', resetGame);
+    gameSoundBtn.addEventListener('click', toggleSound);
+    
+    // Tile clicks
+    Object.keys(tiles).forEach(color => {
+        tiles[color].addEventListener('click', () => handleTileClick(color));
+    });
+    
+    function startGame() {
+        gameMessage.style.display = 'none';
+        gameGrid.style.display = 'grid';
+        isPlaying = true;
+        score = 0;
+        level = 1;
+        lives = 3;
+        updateDisplay();
+        nextRound();
+    }
+    
+    function nextRound() {
+        playerSequence = [];
+        sequence.push(getRandomColor());
+        showSequence();
+    }
+    
+    function getRandomColor() {
+        const colors = ['red', 'blue', 'green', 'yellow'];
+        return colors[Math.floor(Math.random() * colors.length)];
+    }
+    
+    function showSequence() {
+        let index = 0;
+        disableTiles();
+        
+        const interval = setInterval(() => {
+            if (index >= sequence.length) {
+                clearInterval(interval);
+                enableTiles();
+                return;
+            }
+            
+            lightUpTile(sequence[index]);
+            index++;
+        }, 600);
+    }
+    
+    function lightUpTile(color) {
+        const tile = tiles[color];
+        tile.classList.add('lit');
+        playSound(color);
+        
+        setTimeout(() => {
+            tile.classList.remove('lit');
+        }, 400);
+    }
+    
+    function handleTileClick(color) {
+        if (!isPlaying) return;
+        
+        playerSequence.push(color);
+        lightUpTile(color);
+        
+        const currentIndex = playerSequence.length - 1;
+        
+        if (playerSequence[currentIndex] !== sequence[currentIndex]) {
+            // Wrong tile
+            lives--;
+            updateDisplay();
+            
+            if (lives === 0) {
+                gameOver();
+            } else {
+                showMessage('❌ Mauvaise tuile !', 'Réessayez la séquence...');
+                setTimeout(() => {
+                    playerSequence = [];
+                    showSequence();
+                }, 2000);
+            }
+        } else if (playerSequence.length === sequence.length) {
+            // Round complete
+            score += level * 10;
+            level++;
+            updateDisplay();
+            
+            showMessage('✅ Excellent !', `Niveau ${level} - Préparez-vous...`);
+            setTimeout(() => {
+                nextRound();
+            }, 2000);
+        }
+    }
+    
+    function disableTiles() {
+        Object.values(tiles).forEach(tile => {
+            tile.style.pointerEvents = 'none';
+        });
+    }
+    
+    function enableTiles() {
+        Object.values(tiles).forEach(tile => {
+            tile.style.pointerEvents = 'auto';
+        });
+    }
+    
+    function updateDisplay() {
+        gameScore.textContent = score;
+        gameLevel.textContent = level;
+        
+        // Update lives
+        const hearts = gameLives.querySelectorAll('i');
+        hearts.forEach((heart, index) => {
+            if (index >= lives) {
+                heart.classList.add('lost');
+            } else {
+                heart.classList.remove('lost');
+            }
+        });
+    }
+    
+    function gameOver() {
+        isPlaying = false;
+        disableTiles();
+        
+        showMessage('🎮 Game Over !', `Score final: ${score} | Niveau atteint: ${level}`);
+        
+        setTimeout(() => {
+            gameGrid.style.display = 'none';
+            gameMessage.style.display = 'block';
+            gameMessage.innerHTML = `
+                <h3>🎮 Game Over !</h3>
+                <p>Score final: ${score} | Niveau atteint: ${level}</p>
+                <button class="game-start-btn" onclick="startGame()">
+                    <i class="fa-solid fa-redo"></i>
+                    <span>Rejouer</span>
+                </button>
+            `;
+        }, 3000);
+    }
+    
+    function resetGame() {
+        isPlaying = false;
+        sequence = [];
+        playerSequence = [];
+        score = 0;
+        level = 1;
+        lives = 3;
+        updateDisplay();
+        
+        gameGrid.style.display = 'none';
+        gameMessage.style.display = 'block';
+        gameMessage.innerHTML = `
+            <h3>Prêt à jouer avec Jarvis ?</h3>
+            <p>Jarvis va vous montrer une séquence de couleurs. Répétez-la !</p>
+            <button class="game-start-btn" id="gameStartBtn">
+                <i class="fa-solid fa-play"></i>
+                <span>Commencer le jeu</span>
+            </button>
+        `;
+        
+        // Re-attach event listener
+        document.getElementById('gameStartBtn').addEventListener('click', startGame);
+    }
+    
+    function toggleSound() {
+        soundEnabled = !soundEnabled;
+        gameSoundBtn.innerHTML = soundEnabled ? 
+            '<i class="fa-solid fa-volume-up"></i><span>Son: ON</span>' : 
+            '<i class="fa-solid fa-volume-mute"></i><span>Son: OFF</span>';
+    }
+    
+    function playSound(color) {
+        if (!soundEnabled) return;
+        
+        // Create simple beep sounds using Web Audio API
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        const frequencies = {
+            red: 261.63,    // C
+            blue: 329.63,   // E
+            green: 392.00,  // G
+            yellow: 523.25  // C
+        };
+        
+        oscillator.frequency.value = frequencies[color];
+        oscillator.type = 'sine';
+        
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+        
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.5);
+    }
+    
+    function showMessage(title, text) {
+        const tempMessage = document.createElement('div');
+        tempMessage.className = 'game-temp-message';
+        tempMessage.innerHTML = `<h4>${title}</h4><p>${text}</p>`;
+        tempMessage.style.cssText = `
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(10, 14, 39, 0.95);
+            border: 2px solid var(--primary-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            z-index: 1000;
+            color: white;
+        `;
+        
+        gameBoard.appendChild(tempMessage);
+        
+        setTimeout(() => {
+            tempMessage.remove();
+        }, 2000);
+    }
 }
 
 // ===== CONSOLE LOGO =====
