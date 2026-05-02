@@ -755,6 +755,7 @@ function initAllContent() {
     initScrollEffects();
     initAnimations();
     initOneSignal();
+    initUserCounter();
 }
 
 // ===== NAVBAR SCROLL =====
@@ -1428,6 +1429,58 @@ function initQuiz() {
     
     // Load first question
     loadQuestion();
+}
+
+// ===== USER COUNTER =====
+function initUserCounter() {
+    const counterElement = document.getElementById('userCounter');
+    if (!counterElement) return;
+    
+    // Nombre final d'utilisateurs (simulé)
+    const targetUsers = 45832;
+    const duration = 3000; // 3 secondes
+    const steps = 60;
+    const increment = targetUsers / steps;
+    let currentUsers = 0;
+    let step = 0;
+    
+    // Animation du compteur
+    const counterInterval = setInterval(() => {
+        step++;
+        currentUsers = Math.floor(increment * step);
+        
+        // Ajouter un effet aléatoire pour simuler des ajouts en temps réel
+        const randomAdd = Math.floor(Math.random() * 3);
+        currentUsers += randomAdd;
+        
+        if (currentUsers >= targetUsers) {
+            currentUsers = targetUsers;
+            clearInterval(counterInterval);
+        }
+        
+        counterElement.textContent = currentUsers.toLocaleString('fr-FR');
+        
+        // Effet de pulsation quand on atteint le nombre final
+        if (currentUsers === targetUsers) {
+            counterElement.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                counterElement.style.transform = 'scale(1)';
+            }, 200);
+        }
+    }, duration / steps);
+    
+    // Simulation d'ajouts occasionnels après l'animation
+    setInterval(() => {
+        const current = parseInt(counterElement.textContent.replace(/\s/g, ''));
+        const newTotal = current + Math.floor(Math.random() * 2) + 1;
+        counterElement.textContent = newTotal.toLocaleString('fr-FR');
+        
+        // Effet subtil quand un nouvel utilisateur s'ajoute
+        counterElement.style.color = '#10b981';
+        setTimeout(() => {
+            counterElement.style.color = '';
+        }, 500);
+    }, 8000 + Math.random() * 4000); // Entre 8 et 12 secondes
 }
 
 // ===== CONSOLE LOGO =====
