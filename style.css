@@ -702,6 +702,124 @@ section {
     border-radius: 16px;
     padding: 2.5rem;
     backdrop-filter: blur(10px);
+    margin-bottom: 2rem;
+}
+
+.dependencies-warnings {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 2.5rem;
+    backdrop-filter: blur(10px);
+}
+
+.dependencies-warnings h3 {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+.warnings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.warning-item,
+.info-item {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.warning-item {
+    border-left: 4px solid var(--warning-color);
+}
+
+.info-item {
+    border-left: 4px solid var(--primary-color);
+}
+
+.warning-item:hover,
+.info-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
+}
+
+.warning-header,
+.info-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.warning-header i {
+    color: var(--warning-color);
+    font-size: 1.2rem;
+}
+
+.info-header i {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+.warning-title,
+.info-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+}
+
+.warning-content,
+.info-content {
+    padding: 0 1.5rem 1.5rem;
+}
+
+.warning-message,
+.info-message {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+}
+
+.warning-solution,
+.info-note {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.warning-solution strong,
+.info-note strong {
+    color: var(--text-primary);
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.warning-solution code,
+.info-note code {
+    background: rgba(0, 102, 255, 0.1);
+    color: var(--secondary-color);
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 0.9rem;
+    display: block;
+    margin-top: 0.5rem;
+    word-break: break-all;
+}
+
+.info-note {
+    border-left: 3px solid var(--primary-color);
 }
 
 .system-requirements h3 {
@@ -1360,6 +1478,68 @@ section {
     .system-requirements h3 {
         font-size: 1.2rem;
         margin-bottom: 1.5rem;
+    }
+    
+    .dependencies-warnings {
+        padding: 1.5rem;
+    }
+    
+    .dependencies-warnings h3 {
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .warnings-list {
+        gap: 1rem;
+    }
+    
+    .warning-item,
+    .info-item {
+        margin-bottom: 1rem;
+    }
+    
+    .warning-header,
+    .info-header {
+        padding: 0.75rem 1rem;
+    }
+    
+    .warning-header i,
+    .info-header i {
+        font-size: 1rem;
+    }
+    
+    .warning-title,
+    .info-title {
+        font-size: 1rem;
+    }
+    
+    .warning-content,
+    .info-content {
+        padding: 0 1rem 1rem;
+    }
+    
+    .warning-message,
+    .info-message {
+        font-size: 0.9rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .warning-solution,
+    .info-note {
+        padding: 0.75rem;
+    }
+    
+    .warning-solution strong,
+    .info-note strong {
+        font-size: 0.85rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    .warning-solution code,
+    .info-note code {
+        font-size: 0.8rem;
+        padding: 0.5rem;
+        word-break: break-all;
     }
     
     .requirements-grid {

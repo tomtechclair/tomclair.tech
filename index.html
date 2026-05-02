@@ -384,6 +384,66 @@
                     </div>
                 </div>
             </div>
+            
+            <div class="dependencies-warnings">
+                <h3>⚠️ Dépendances Optionnelles</h3>
+                <div class="warnings-list">
+                    <div class="warning-item">
+                        <div class="warning-header">
+                            <i class="fa-solid fa-exclamation-triangle"></i>
+                            <span class="warning-title">pygame non installé</span>
+                        </div>
+                        <div class="warning-content">
+                            <p class="warning-message">l'audio TTS sera désactivé.</p>
+                            <div class="warning-solution">
+                                <strong>Pour l'installer :</strong>
+                                <code>pip install pygame --only-binary :all:</code>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="warning-item">
+                        <div class="warning-header">
+                            <i class="fa-solid fa-exclamation-triangle"></i>
+                            <span class="warning-title">pyaudio non installé</span>
+                        </div>
+                        <div class="warning-content">
+                            <p class="warning-message">le micro sera désactivé.</p>
+                            <div class="warning-solution">
+                                <strong>Pour l'installer :</strong>
+                                <code>pip install pipwin && pipwin install pyaudio</code>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="warning-item">
+                        <div class="warning-header">
+                            <i class="fa-solid fa-exclamation-triangle"></i>
+                            <span class="warning-title">google-auth-oauthlib non installé</span>
+                        </div>
+                        <div class="warning-content">
+                            <p class="warning-message">Gmail/Drive/Calendar désactivés.</p>
+                            <div class="warning-solution">
+                                <strong>Pour l'installer :</strong>
+                                <code>pip install google-auth-oauthlib google-api-python-client</code>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-header">
+                            <i class="fa-solid fa-info-circle"></i>
+                            <span class="info-title">Pygame absent</span>
+                        </div>
+                        <div class="info-content">
+                            <p class="info-message">démarrage sans audio TTS.</p>
+                            <div class="info-note">
+                                <strong>Note :</strong> Jarvis fonctionnera sans ces dépendances, mais certaines fonctionnalités seront limitées.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 

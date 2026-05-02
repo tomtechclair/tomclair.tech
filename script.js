@@ -210,38 +210,65 @@ function initAnimations() {
         stat.style.animationDelay = Math.random() * 2 + 's';
     });
     
-    // Download button functionality
+    // Download button functionality with 10-second delay
     const downloadBtn = document.querySelector('.btn-primary[href*="JARVIS_Setup_v3.5.exe"]');
     if (downloadBtn) {
         downloadBtn.addEventListener('click', function(e) {
             e.preventDefault();
             
-            // Create download link
-            const downloadUrl = 'JARVIS_Setup_v3.5.exe';
-            const link = document.createElement('a');
-            link.href = downloadUrl;
-            link.download = 'JARVIS_Setup_v3.5.exe';
-            link.target = '_blank';
-            
-            // Trigger download
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            // Visual feedback
             const originalHTML = this.innerHTML;
-            this.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Téléchargement...</span>';
-            this.style.background = 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)';
+            const originalBg = this.style.background;
+            let timeLeft = 10;
             
-            setTimeout(() => {
-                this.innerHTML = '<i class="fa-solid fa-check"></i> <span>Téléchargé !</span>';
-                this.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+            // Disable button during countdown
+            this.disabled = true;
+            this.style.cursor = 'not-allowed';
+            
+            // Start countdown
+            const updateCountdown = () => {
+                this.innerHTML = `<i class="fa-solid fa-clock"></i> <span>Téléchargement dans ${timeLeft}s...</span>`;
+                this.style.background = 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)';
                 
-                setTimeout(() => {
-                    this.innerHTML = originalHTML;
-                    this.style.background = '';
-                }, 2000);
-            }, 1500);
+                if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    
+                    // Start actual download
+                    this.innerHTML = '<i class="fa-solid fa-download"></i> <span>Téléchargement en cours...</span>';
+                    this.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+                    
+                    // Create download link
+                    const downloadUrl = 'JARVIS_Setup_v3.5.exe';
+                    const link = document.createElement('a');
+                    link.href = downloadUrl;
+                    link.download = 'JARVIS_Setup_v3.5.exe';
+                    link.target = '_blank';
+                    
+                    // Trigger download
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    // Show completion
+                    setTimeout(() => {
+                        this.innerHTML = '<i class="fa-solid fa-check"></i> <span>Téléchargé !</span>';
+                        this.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+                        
+                        // Reset button after completion
+                        setTimeout(() => {
+                            this.innerHTML = originalHTML;
+                            this.style.background = originalBg;
+                            this.disabled = false;
+                            this.style.cursor = 'pointer';
+                        }, 3000);
+                    }, 1500);
+                } else {
+                    timeLeft--;
+                }
+            };
+            
+            // Start countdown immediately
+            updateCountdown();
+            const countdownInterval = setInterval(updateCountdown, 1000);
         });
     }
 }
