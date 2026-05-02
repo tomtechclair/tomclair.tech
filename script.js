@@ -1,19 +1,7 @@
-// ===== MOBILE EMAIL CAPTURE SCREEN =====
+// ===== MOBILE LOADING SCREEN =====
 function initMobileLoading() {
-    // Check if it's mobile and show email capture page
-    if (window.innerWidth <= 768) {
-        // Check if user already subscribed
-        const hasSubscribed = localStorage.getItem('jarvis_email_subscribed');
-        if (hasSubscribed === 'true' || hasSubscribed === 'skipped') {
-            // User already subscribed or skipped, show normal site
-            initAllContent();
-        } else {
-            // Show email capture page
-            showEmailCapturePage();
-        }
-    } else {
-        initAllContent();
-    }
+    // Initialize all content directly - no email capture
+    initAllContent();
 }
 
 function showEmailCapturePage() {
