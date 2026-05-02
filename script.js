@@ -755,6 +755,7 @@ function initAllContent() {
     initScrollEffects();
     initAnimations();
     initOneSignal();
+    initMobileSwipeBlock();
 }
 
 // ===== NAVBAR SCROLL =====
@@ -1533,6 +1534,61 @@ function closeWelcomeMessage() {
     setTimeout(() => {
         welcomeOverlay.style.display = 'none';
     }, 500);
+}
+
+// ===== MOBILE SWIPE BLOCK =====
+function initMobileSwipeBlock() {
+    // Only apply on mobile devices
+    if (window.innerWidth > 768) return;
+    
+    let startX = 0;
+    let startY = 0;
+    let isScrolling = false;
+    
+    // Prevent horizontal swipe on touch devices
+    document.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        isScrolling = false;
+    }, { passive: true });
+    
+    document.addEventListener('touchmove', (e) => {
+        if (!startX || !startY) return;
+        
+        const currentX = e.touches[0].clientX;
+        const currentY = e.touches[0].clientY;
+        const diffX = startX - currentX;
+        const diffY = startY - currentY;
+        
+        // Detect horizontal swipe
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+            // Prevent horizontal swipe
+            if (Math.abs(diffX) > 10) {
+                e.preventDefault();
+                return false;
+            }
+        }
+    }, { passive: false });
+    
+    // Prevent horizontal scroll with wheel
+    document.addEventListener('wheel', (e) => {
+        if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+            e.preventDefault();
+            return false;
+        }
+    }, { passive: false });
+    
+    // Force body to stay in place
+    document.body.style.overflowX = 'hidden';
+    document.body.style.position = 'relative';
+    document.body.style.width = '100%';
+    document.body.style.maxWidth = '100vw';
+    
+    // Prevent overscroll behavior
+    document.body.style.overscrollBehavior = 'none';
+    
+    // Add touch action for better control
+    document.body.style.touchAction = 'pan-y';
 }
 
 // ===== CONSOLE LOGO =====

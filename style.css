@@ -1837,6 +1837,35 @@ section {
         transform: none !important;
     }
     
+    /* Prevent horizontal scrolling and swipe */
+    body {
+        overflow-x: hidden !important;
+        position: fixed !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+        touch-action: pan-y !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+    
+    html {
+        overflow-x: hidden !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+    }
+    
+    /* Force all containers to stay within viewport */
+    * {
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* Prevent horizontal scroll on all elements */
+    div, section, article, main, header, footer, nav {
+        overflow-x: hidden !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+    }
+    
     .mobile-loading {
         display: none;
     }
