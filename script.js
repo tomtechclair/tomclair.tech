@@ -108,45 +108,58 @@ function initContactForm() {
     const form = document.getElementById('contactForm');
     if (!form) return;
     
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        const formData = new FormData(form);
-        const name = formData.get('name');
-        const email = formData.get('email');
-        const subject = formData.get('subject');
-        const message = formData.get('message');
-        
-        // Créer le mailto link pour tom16112008@gmail.com
-        const mailtoLink = `mailto:tom16112008@gmail.com?subject=${encodeURIComponent(`[Jarvis Site] ${subject}`)}&body=${encodeURIComponent(
-            `Nom: ${name}\nEmail: ${email}\n\nMessage:\n${message}\n\n---\nEnvoyé depuis le site tomclair.tech`
-        )}`;
-        
-        // Feedback visuel
         const button = form.querySelector('button');
         const originalHTML = button.innerHTML;
         
-        button.innerHTML = '<i class="fa-solid fa-envelope"></i> <span>Ouverture du client email...</span>';
-        button.style.background = 'linear-gradient(135deg, #0066ff 0%, #00d4ff 100%)';
+        // Afficher l'état de chargement
+        button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Envoi en cours...</span>';
+        button.style.background = 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)';
         button.disabled = true;
         
-        // Ouvrir le client email par défaut
-        setTimeout(() => {
-            window.location.href = mailtoLink;
+        const formData = new FormData(form);
+        
+        try {
+            // Envoyer via Formspree directement
+            const response = await fetch('https://formspree.io/f/xjvqzvqj', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
             
-            // Feedback de confirmation
-            setTimeout(() => {
-                button.innerHTML = '<i class="fa-solid fa-check"></i> <span>Client email ouvert!</span>';
+            if (response.ok) {
+                // Succès
+                button.innerHTML = '<i class="fa-solid fa-check"></i> <span>Message envoyé avec succès!</span>';
                 button.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+                form.reset();
                 
+                // Réinitialiser après 3 secondes
                 setTimeout(() => {
                     button.innerHTML = originalHTML;
                     button.style.background = '';
                     button.disabled = false;
-                    form.reset();
-                }, 2000);
-            }, 1000);
-        }, 500);
+                }, 3000);
+            } else {
+                throw new Error('Erreur lors de l\'envoi');
+            }
+        } catch (error) {
+            console.error('Erreur:', error);
+            
+            // Afficher l'erreur
+            button.innerHTML = '<i class="fa-solid fa-exclamation-triangle"></i> <span>Erreur - Réessayez</span>';
+            button.style.background = 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)';
+            
+            // Réinitialiser après 3 secondes
+            setTimeout(() => {
+                button.innerHTML = originalHTML;
+                button.style.background = '';
+                button.disabled = false;
+            }, 3000);
+        }
     });
 }
 
