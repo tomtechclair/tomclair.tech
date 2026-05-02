@@ -757,6 +757,7 @@ function initAllContent() {
     initOneSignal();
     initMobileSwipeBlock();
     initMobileDownloadMessage();
+    initMobileMenuToggle();
 }
 
 // ===== NAVBAR SCROLL =====
@@ -1601,7 +1602,7 @@ function initMobileDownloadMessage() {
     
     // Completely block download access
     downloadBtn.classList.add('mobile-download');
-    downloadBtn.innerHTML = '<i class="fa-solid fa-lock"></i> <span>Indisponible sur mobile</span>';
+    downloadBtn.innerHTML = '<i class="fa-solid fa-ban"></i> <span>Bloqué sur mobile</span>';
     downloadBtn.style.pointerEvents = 'none';
     downloadBtn.style.cursor = 'not-allowed';
     downloadBtn.setAttribute('href', '#');
@@ -1634,13 +1635,14 @@ function showMobileDownloadMessage() {
     const messageDiv = document.createElement('div');
     messageDiv.className = 'mobile-download-message';
     messageDiv.innerHTML = `
-        <h3>📱 Bientôt disponible sur mobile !</h3>
+        <h3>� Téléchargement bloqué sur mobile</h3>
         <p>
-            Je suis Tom, et je travaille actuellement à optimiser Jarvis pour les appareils mobiles. 
-            La version mobile sera bientôt disponible avec toutes les fonctionnalités que vous aimez.
+            Le téléchargement de Jarvis est temporairement bloqué sur les appareils mobiles.
+            Je travaille actuellement à optimiser la version mobile pour vous offrir la meilleure expérience.
         </p>
         <p>
-            Merci de votre patience et de votre intérêt pour mon projet !
+            Pour télécharger Jarvis, veuillez utiliser un ordinateur desktop.
+            Merci de votre compréhension !
         </p>
         <div class="signature">- Tom, Fondateur de Jarvis</div>
         <button class="mobile-download-close" onclick="this.parentElement.remove()">
@@ -1661,6 +1663,58 @@ function showMobileDownloadMessage() {
         }
     };
     document.addEventListener('keydown', escapeHandler);
+}
+
+// ===== MOBILE MENU TOGGLE =====
+function initMobileMenuToggle() {
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (!navToggle || !navLinks) return;
+    
+    // Toggle menu on click
+    navToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        navLinks.classList.toggle('active');
+        
+        // Animate hamburger menu
+        const spans = navToggle.querySelectorAll('span');
+        spans.forEach((span, index) => {
+            if (navLinks.classList.contains('active')) {
+                if (index === 0) span.style.transform = 'rotate(45deg) translateY(8px)';
+                if (index === 1) span.style.opacity = '0';
+                if (index === 2) span.style.transform = 'rotate(-45deg) translateY(-8px)';
+            } else {
+                span.style.transform = '';
+                span.style.opacity = '';
+            }
+        });
+    });
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!navToggle.contains(e.target) && !navLinks.contains(e.target)) {
+            navLinks.classList.remove('active');
+            const spans = navToggle.querySelectorAll('span');
+            spans.forEach(span => {
+                span.style.transform = '';
+                span.style.opacity = '';
+            });
+        }
+    });
+    
+    // Close menu on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            navLinks.classList.remove('active');
+            const spans = navToggle.querySelectorAll('span');
+            spans.forEach(span => {
+                span.style.transform = '';
+                span.style.opacity = '';
+            });
+        }
+    });
 }
 
 // ===== CONSOLE LOGO =====
