@@ -2,7 +2,7 @@
 function initMobileLoading() {
     // Only show loading screen on mobile
     if (window.innerWidth > 768) {
-        initRevealAnimation();
+        initAllContent();
         return;
     }
     
@@ -25,7 +25,7 @@ function initMobileLoading() {
     ];
     
     const updateProgress = () => {
-        progress += 10;
+        progress += 20;
         progressBar.style.width = progress + '%';
         progressText.textContent = messages[Math.floor(progress / 20)];
     };
@@ -59,115 +59,26 @@ function initMobileLoading() {
 }
 
 function initAllContent() {
-    initTypingEffect();
-    initScrollProgress();
-    initBackToTop();
     initNavbarScroll();
     initMobileMenu();
     initFAQ();
     initContactForm();
-    initDownloadButton();
-    
-    // Force all elements to be visible on mobile
-    const allElements = document.querySelectorAll('.reveal, .hero-content, .features-grid, .install-grid, .tech-grid, .faq-container, .contact-form, .section-header, .feature-card, .install-card, .tech-card, .faq-item, .trouble-item');
-    allElements.forEach(element => {
-        element.classList.add('active');
-    });
+    initScrollEffects();
+    initAnimations();
 }
 
-// ===== MAIN INITIALIZATION =====
-window.addEventListener('load', () => {
-    initMobileLoading();
-});
-
-// ===== TYPING EFFECT =====
-function initTypingEffect() {
-    const typingElement = document.getElementById('typingText');
-    if (!typingElement) return;
-    
-    const texts = [
-        "Bienvenue sur Jarvis - Votre assistant intelligent",
-        "Automatisez votre quotidien avec l'IA",
-        "Une technologie de pointe à votre service"
-    ];
-    
-    let textIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
-    let typingSpeed = 80;
-    
-    function type() {
-        const currentText = texts[textIndex];
-        
-        if (isDeleting) {
-            typingElement.innerHTML = currentText.substring(0, charIndex - 1) + '<span class="typing-cursor">|</span>';
-            charIndex--;
-            typingSpeed = 40;
-        } else {
-            typingElement.innerHTML = currentText.substring(0, charIndex + 1) + '<span class="typing-cursor">|</span>';
-            charIndex++;
-            typingSpeed = 80;
-        }
-        
-        if (!isDeleting && charIndex === currentText.length) {
-            typingSpeed = 2000;
-            isDeleting = true;
-        } else if (isDeleting && charIndex === 0) {
-            isDeleting = false;
-            textIndex = (textIndex + 1) % texts.length;
-            typingSpeed = 500;
-        }
-        
-        setTimeout(type, typingSpeed);
-    }
-    
-    type();
-}
-
-// ===== SCROLL PROGRESS BAR =====
-function initScrollProgress() {
-    const progressBar = document.getElementById('scrollProgress');
-    if (!progressBar) return;
-    
-    window.addEventListener('scroll', () => {
-        const scrollTop = window.pageYOffset;
-        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const scrollPercent = (scrollTop / docHeight) * 100;
-        progressBar.style.width = scrollPercent + '%';
-    });
-}
-
-// ===== BACK TO TOP BUTTON =====
-function initBackToTop() {
-    const backToTopBtn = document.getElementById('backToTop');
-    if (!backToTopBtn) return;
-    
-    window.addEventListener('scroll', () => {
-        if (window.pageYOffset > 300) {
-            backToTopBtn.classList.add('visible');
-        } else {
-            backToTopBtn.classList.remove('visible');
-        }
-    });
-    
-    backToTopBtn.addEventListener('click', () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
-}
-
-// ===== NAVBAR SCROLL EFFECT =====
+// ===== NAVBAR SCROLL =====
 function initNavbarScroll() {
     const navbar = document.getElementById('navbar');
     if (!navbar) return;
     
     window.addEventListener('scroll', () => {
         if (window.pageYOffset > 50) {
-            navbar.classList.add('scrolled');
+            navbar.style.background = 'rgba(10, 14, 39, 0.98)';
+            navbar.style.backdropFilter = 'blur(20px)';
         } else {
-            navbar.classList.remove('scrolled');
+            navbar.style.background = 'rgba(10, 14, 39, 0.95)';
+            navbar.style.backdropFilter = 'blur(20px)';
         }
     });
     
@@ -189,6 +100,34 @@ function initNavbarScroll() {
             if (link.getAttribute('href') === '#' + current) {
                 link.classList.add('active');
             }
+        });
+    });
+}
+
+// ===== MOBILE MENU =====
+function initMobileMenu() {
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (!navToggle || !navLinks) return;
+    
+    navToggle.addEventListener('click', () => {
+        navToggle.classList.toggle('active');
+        navLinks.classList.toggle('active');
+    });
+    
+    document.addEventListener('click', (e) => {
+        if (!navToggle.contains(e.target) && !navLinks.contains(e.target)) {
+            navToggle.classList.remove('active');
+            navLinks.classList.remove('active');
+        }
+    });
+    
+    // Close mobile menu on link click
+    navLinks.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            navToggle.classList.remove('active');
+            navLinks.classList.remove('active');
         });
     });
 }
@@ -218,7 +157,7 @@ function initFAQ() {
     });
 }
 
-// ===== CONTACT FORM LOGIC =====
+// ===== CONTACT FORM =====
 function initContactForm() {
     const form = document.getElementById('contactForm');
     if (!form) return;
@@ -227,243 +166,210 @@ function initContactForm() {
         e.preventDefault();
         
         const button = form.querySelector('button');
-        const originalText = button.innerHTML;
+        const originalHTML = button.innerHTML;
         
-        button.innerHTML = '<span>ENVOI EN COURS...</span>';
+        button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Envoi en cours...</span>';
         button.disabled = true;
         
         const formData = new FormData(form);
         
         try {
-            const response = await fetch(form.action, {
-                method: 'POST',
-                body: formData
-            });
+            // Simulate form submission
+            await new Promise(resolve => setTimeout(resolve, 2000));
             
-            if (response.ok) {
-                button.innerHTML = "✓ MESSAGE ENVOYÉ !";
-                button.style.background = "#10b981";
-                form.reset();
-                
-                setTimeout(() => {
-                    button.innerHTML = originalText;
-                    button.style.background = "";
-                    button.disabled = false;
-                }, 3000);
-            } else {
-                throw new Error("Server error");
-            }
-        } catch (error) {
-            button.innerHTML = "ERREUR - RÉESSAYEZ";
-            button.style.background = "#ff5f56";
+            button.innerHTML = '<i class="fa-solid fa-check"></i> <span>Message envoyé !</span>';
+            button.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+            form.reset();
             
             setTimeout(() => {
-                button.innerHTML = originalText;
-                button.style.background = "";
+                button.innerHTML = originalHTML;
+                button.style.background = '';
+                button.disabled = false;
+            }, 3000);
+        } catch (error) {
+            button.innerHTML = '<i class="fa-solid fa-exclamation-triangle"></i> <span>Erreur - Réessayez</span>';
+            button.style.background = 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)';
+            
+            setTimeout(() => {
+                button.innerHTML = originalHTML;
+                button.style.background = '';
                 button.disabled = false;
             }, 3000);
         }
     });
 }
 
-// ===== MOBILE MENU =====
-function initMobileMenu() {
-    const navToggle = document.getElementById('navToggle');
-    const navLinks = document.querySelector('.nav-links');
-    
-    if (!navToggle || !navLinks) return;
-    
-    navToggle.addEventListener('click', () => {
-        navToggle.classList.toggle('active');
-        navLinks.classList.toggle('active');
-    });
-    
-    document.addEventListener('click', (e) => {
-        if (!navToggle.contains(e.target) && !navLinks.contains(e.target)) {
-            navToggle.classList.remove('active');
-            navLinks.classList.remove('active');
-        }
-    });
-}
-
-
-// ===== REVEAL ANIMATION =====
-function initRevealAnimation() {
-    // Skip reveal animations on mobile for instant display and fast updates
-    if (window.innerWidth <= 768) {
-        // Force immediate display on mobile
-        const allElements = document.querySelectorAll('.reveal, .hero-content, .features-grid, .install-grid, .tech-grid, .faq-container, .contact-form, .section-header, .feature-card, .install-card, .tech-card, .faq-item, .trouble-item');
-        allElements.forEach(element => {
-            element.classList.add('active');
-        });
-        return;
-    }
-    
-    // Desktop: Keep animations for better UX
-    const revealElements = document.querySelectorAll('.reveal');
-    
-    const revealOnScroll = () => {
-        revealElements.forEach(element => {
-            const elementTop = element.getBoundingClientRect().top;
-            const elementVisible = 150;
-            
-            if (elementTop < window.innerHeight - elementVisible) {
-                element.classList.add('active');
+// ===== SCROLL EFFECTS =====
+function initScrollEffects() {
+    // Smooth scroll for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
             }
         });
+    });
+    
+    // Reveal animations on scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
     };
     
-    // Reveal hero content immediately on desktop
-    setTimeout(() => {
-        const heroContent = document.querySelector('.hero-content');
-        if (heroContent) heroContent.classList.add('active');
-    }, 100);
-    
-    revealOnScroll();
-    window.addEventListener('scroll', revealOnScroll);
-}
-
-// ===== NEURAL BACKGROUND ANIMATION =====
-const neuralCanvas = document.getElementById('neuralBg');
-if (neuralCanvas) {
-    const ctx = neuralCanvas.getContext('2d');
-    
-    let particles = [];
-    
-    function initNeuralBg() {
-        neuralCanvas.width = window.innerWidth;
-        neuralCanvas.height = window.innerHeight;
-        particles = [];
-        const particleCount = Math.min(100, Math.floor((neuralCanvas.width * neuralCanvas.height) / 15000));
-        
-        for (let i = 0; i < particleCount; i++) {
-            particles.push({
-                x: Math.random() * neuralCanvas.width,
-                y: Math.random() * neuralCanvas.height,
-                vx: (Math.random() - 0.5) * 0.5,
-                vy: (Math.random() - 0.5) * 0.5,
-                size: Math.random() * 2 + 0.5
-            });
-        }
-    }
-    
-    function animateNeuralBg() {
-        ctx.clearRect(0, 0, neuralCanvas.width, neuralCanvas.height);
-        
-        particles.forEach((p, i) => {
-            p.x += p.vx;
-            p.y += p.vy;
-            
-            if (p.x < 0 || p.x > neuralCanvas.width) p.vx *= -1;
-            if (p.y < 0 || p.y > neuralCanvas.height) p.vy *= -1;
-            
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(0, 210, 255, 0.6)';
-            ctx.fill();
-            
-            for (let j = i + 1; j < particles.length; j++) {
-                const p2 = particles[j];
-                const dx = p.x - p2.x;
-                const dy = p.y - p2.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                
-                if (dist < 150) {
-                    ctx.beginPath();
-                    ctx.moveTo(p.x, p.y);
-                    ctx.lineTo(p2.x, p2.y);
-                    ctx.strokeStyle = 'rgba(0, 210, 255, ' + (0.1 * (1 - dist / 150)) + ')';
-                    ctx.lineWidth = 0.5;
-                    ctx.stroke();
-                }
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
             }
         });
-        
-        requestAnimationFrame(animateNeuralBg);
+    }, observerOptions);
+    
+    // Observe elements for animation
+    document.querySelectorAll('.text-block, .feature-card, .step-card, .tech-item, .contact-item').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(el);
+    });
+}
+
+// ===== ANIMATIONS =====
+function initAnimations() {
+    // Hero orb animations
+    const orbCore = document.querySelector('.orb-core');
+    if (orbCore) {
+        setInterval(() => {
+            const randomX = Math.random() * 20 - 10;
+            const randomY = Math.random() * 20 - 10;
+            orbCore.style.transform = `translate(${randomX}px, ${randomY}px)`;
+        }, 3000);
     }
     
-    window.addEventListener('resize', initNeuralBg);
-    initNeuralBg();
-    animateNeuralBg();
-}
-
-// ===== COPY CODE FUNCTIONALITY =====
-function copyCode(button) {
-    const codeBlock = button.closest('.code-block');
-    const code = codeBlock.querySelector('code');
-    const textArea = document.createElement('textarea');
-    textArea.value = code.textContent;
-    document.body.appendChild(textArea);
-    textArea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textArea);
+    // Floating animation for stats
+    const statNumbers = document.querySelectorAll('.stat-number');
+    statNumbers.forEach(stat => {
+        stat.style.animation = 'float 3s ease-in-out infinite';
+        stat.style.animationDelay = Math.random() * 2 + 's';
+    });
     
-    // Visual feedback
-    const originalHTML = button.innerHTML;
-    button.innerHTML = '<i class="fa-solid fa-check"></i>';
-    button.style.color = '#10b981';
-    
-    setTimeout(() => {
-        button.innerHTML = originalHTML;
-        button.style.color = '';
-    }, 2000);
-}
-
-// ===== DOWNLOAD BUTTON FUNCTIONALITY =====
-function initDownloadButton() {
-    const downloadBtn = document.querySelector('.btn-download');
-    if (!downloadBtn) return;
-    
-    downloadBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        // Create download link
-        const downloadUrl = 'JARVIS_Setup_v3.5.exe';
-        const link = document.createElement('a');
-        link.href = downloadUrl;
-        link.download = 'JARVIS_Setup_v3.5.exe';
-        link.target = '_blank';
-        
-        // Trigger download
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        
-        // Visual feedback
-        const originalHTML = this.innerHTML;
-        this.innerHTML = '<span>Téléchargement en cours...</span><i class="fa-solid fa-spinner fa-spin"></i>';
-        this.style.background = 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)';
-        
-        setTimeout(() => {
-            this.innerHTML = '<span>✓ Téléchargé!</span><i class="fa-solid fa-check"></i>';
-            this.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+    // Download button functionality
+    const downloadBtn = document.querySelector('.btn-primary[href*="JARVIS_Setup_v3.5.exe"]');
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Create download link
+            const downloadUrl = 'JARVIS_Setup_v3.5.exe';
+            const link = document.createElement('a');
+            link.href = downloadUrl;
+            link.download = 'JARVIS_Setup_v3.5.exe';
+            link.target = '_blank';
+            
+            // Trigger download
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Visual feedback
+            const originalHTML = this.innerHTML;
+            this.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Téléchargement...</span>';
+            this.style.background = 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)';
             
             setTimeout(() => {
-                this.innerHTML = originalHTML;
-                this.style.background = '';
-            }, 2000);
-        }, 1500);
+                this.innerHTML = '<i class="fa-solid fa-check"></i> <span>Téléchargé !</span>';
+                this.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+                
+                setTimeout(() => {
+                    this.innerHTML = originalHTML;
+                    this.style.background = '';
+                }, 2000);
+            }, 1500);
+        });
+    }
+}
+
+// ===== MAIN INITIALIZATION =====
+window.addEventListener('load', () => {
+    initMobileLoading();
+});
+
+// ===== RESIZE HANDLER =====
+let resizeTimer;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+        // Re-initialize on resize for responsive behavior
+        if (window.innerWidth > 768) {
+            const loadingScreen = document.getElementById('mobileLoading');
+            if (loadingScreen && loadingScreen.style.display === 'flex') {
+                loadingScreen.style.display = 'none';
+                initAllContent();
+            }
+        }
+    }, 250);
+});
+
+// ===== PERFORMANCE OPTIMIZATION =====
+// Lazy loading for images
+if ('IntersectionObserver' in window) {
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src;
+                img.classList.remove('lazy');
+                imageObserver.unobserve(img);
+            }
+        });
+    });
+    
+    document.querySelectorAll('img[data-src]').forEach(img => {
+        imageObserver.observe(img);
     });
 }
 
-// ===== SMOOTH SCROLL FOR NAV LINKS =====
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
+// ===== UTILITY FUNCTIONS =====
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+function throttle(func, limit) {
+    let inThrottle;
+    return function() {
+        const args = arguments;
+        const context = this;
+        if (!inThrottle) {
+            func.apply(context, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
         }
-        
-        // Close mobile menu if open
-        const navToggle = document.getElementById('navToggle');
-        const navLinks = document.querySelector('.nav-links');
-        if (navToggle && navLinks) {
-            navToggle.classList.remove('active');
-            navLinks.classList.remove('active');
-        }
-    });
+    };
+}
+
+// ===== ERROR HANDLING =====
+window.addEventListener('error', (e) => {
+    console.error('JavaScript error:', e.error);
 });
+
+window.addEventListener('unhandledrejection', (e) => {
+    console.error('Unhandled promise rejection:', e.reason);
+});
+
+// ===== CONSOLE LOGO =====
+console.log('%c Jarvis Assistant %c tomclair.tech', 
+    'color: #0066ff; font-size: 20px; font-weight: bold;', 
+    'color: #00d4ff; font-size: 16px;');

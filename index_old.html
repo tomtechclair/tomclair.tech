@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jarvis - Votre Assistant Intelligent</title>
+    <link rel="stylesheet" href="style.css?v=9">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <!-- Mobile Loading Screen -->
+    <div class="mobile-loading" id="mobileLoading">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <span class="logo-text">tomclair</span><span class="logo-dot">.tech</span>
+            </div>
+            <div class="loading-title">Jarvis</div>
+            <div class="loading-subtitle">Votre assistant intelligent</div>
+            <div class="loading-progress">
+                <div class="progress-bar"></div>
+                <div class="progress-text">Initialisation...</div>
+            </div>
+            <div class="loading-timer" id="loadingTimer">10</div>
+        </div>
+    </div>
+
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-text">tomclair</span><span class="logo-dot">.tech</span>
+            </div>
+            <div class="nav-links">
+                <a href="#hero" class="nav-link active">Accueil</a>
+                <a href="#features" class="nav-link">Fonctionnalités</a>
+                <a href="#install" class="nav-link">Installation</a>
+                <a href="#tech" class="nav-link">Technique</a>
+                <a href="#faq" class="nav-link">FAQ</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+            <div class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="Retour en haut">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 15l-6-6-6 6"/>
+        </svg>
+    </button>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <canvas class="hero-bg-animation" id="neuralBg"></canvas>
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <span class="title-line">Jarvis</span>
+                <span class="title-line gradient-text">Votre Assistant Intelligent</span>
+            </h1>
+            <p class="hero-subtitle" id="typingText">
+                <span class="typing-cursor">|</span>
+            </p>
+            <div class="hero-actions">
+                <a href="#features" class="btn btn-primary">
+                    <span>Découvrir Jarvis</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+                <a href="JARVIS_Setup_v3.5.exe" class="btn btn-download" download="JARVIS_Setup_v3.5.exe" target="_blank">
+                    <span>Télécharger Jarvis</span>
+                    <i class="fa-solid fa-download"></i>
+                </a>
+                <a href="#contact" class="btn btn-secondary">
+                    <span>Contactez-nous</span>
+                    <i class="fa-solid fa-message"></i>
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-icon">✓</span>
+                    <span class="stat-text">SYSTÈME</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">🤖</span>
+                    <span class="stat-text">IA TECHNOLOGIE</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">🕐</span>
+                    <span class="stat-text">24/7 SUPPORT</span>
+                </div>
+            </div>
+                <a href="#features" class="btn btn-primary">
+                    <span>DÉCOUVRIR</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+                <a href="#contact" class="btn btn-secondary">NOUS CONTACTER</a>
+            </div>
+            <div class="hero-socials">
+                <a href="https://www.tiktok.com/@tom_visionai_pro" target="_blank" rel="noopener" class="social-link social-tiktok" aria-label="TikTok">
+                    <i class="fa-brands fa-tiktok"></i>
+                    <span>@tom_visionai_pro</span>
+                </a>
+                <a href="https://www.instagram.com/tom_visionai_pro/" target="_blank" rel="noopener" class="social-link social-instagram" aria-label="Instagram">
+                    <i class="fa-brands fa-instagram"></i>
+                    <span>@tom_visionai_pro</span>
+                </a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="hero-orb">
+                <div class="orb-ring ring-1"></div>
+                <div class="orb-ring ring-2"></div>
+                <div class="orb-ring ring-3"></div>
+                <div class="orb-core"></div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span>SCROLL</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">FONCTIONNALITÉS</span>
+                <h2 class="section-title">Ce Que Jarvis Peut Faire Pour Vous</h2>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card reveal">
+                    <h3>Assistant Vocal</h3>
+                    <p>Interaction naturelle par la voix.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <h3>Automatisation</h3>
+                    <p>Automatisez vos tâches répétitives.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <h3>Multi-Plateforme</h3>
+                    <p>Accédez depuis n'importe quel appareil.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation Section -->
+    <section class="install" id="install">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">INSTALLATION</span>
+                <h2 class="section-title">Installer Jarvis sur Votre Système</h2>
+                <p class="section-subtitle">Suivez ces étapes simples pour déployer Jarvis avec Python 3.12.9</p>
+            </div>
+            
+            <div class="install-grid">
+                <div class="install-card reveal">
+                    <div class="install-step">
+                        <div class="step-number">1</div>
+                        <h3>Prérequis Système</h3>
+                    </div>
+                    <div class="install-content">
+                        <ul class="requirements">
+                            <li><i class="fa-brands fa-python"></i> Python 3.12.9 ou supérieur</li>
+                            <li><i class="fa-solid fa-microchip"></i> 4GB RAM minimum</li>
+                            <li><i class="fa-solid fa-hdd"></i> 2GB d'espace disque</li>
+                            <li><i class="fa-solid fa-wifi"></i> Connection internet stable</li>
+                            <li><i class="fa-brands fa-windows"></i> Windows 10/11 (recommandé)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="install-card reveal">
+                    <div class="install-step">
+                        <div class="step-number">2</div>
+                        <h3>Installation Python 3.12.9</h3>
+                    </div>
+                    <div class="install-content">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Téléchargement</span>
+                                <button class="copy-btn" onclick="copyCode(this)">
+                                    <i class="fa-solid fa-copy"></i>
+                                </button>
+                            </div>
+                            <pre><code># 1. Télécharger Python 3.12.9
+# Visiter: https://www.python.org/downloads/release/python-3129/
+# Choisir "Windows installer (64-bit)"
+
+# 2. Installation (cocher "Add Python to PATH")
+# Lancer l'installateur et suivre les instructions</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="install-card reveal">
+                    <div class="install-step">
+                        <div class="step-number">3</div>
+                        <h3>Clonage du Projet</h3>
+                    </div>
+                    <div class="install-content">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Commandes Git</span>
+                                <button class="copy-btn" onclick="copyCode(this)">
+                                    <i class="fa-solid fa-copy"></i>
+                                </button>
+                            </div>
+                            <pre><code># Cloner le dépôt Jarvis
+git clone https://github.com/tomtechclair/tomclair.tech.git
+cd tomclair.tech
+
+# Ou télécharger directement depuis GitHub
+# https://github.com/tomtechclair/tomclair.tech</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="install-card reveal">
+                    <div class="install-step">
+                        <div class="step-number">4</div>
+                        <h3>Configuration Environnement</h3>
+                    </div>
+                    <div class="install-content">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Environnement Virtuel</span>
+                                <button class="copy-btn" onclick="copyCode(this)">
+                                    <i class="fa-solid fa-copy"></i>
+                                </button>
+                            </div>
+                            <pre><code># Créer l'environnement virtuel
+python -m venv jarvis_env
+
+# Activer l'environnement
+# Windows:
+jarvis_env\Scripts\activate
+
+# Linux/Mac:
+source jarvis_env/bin/activate</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="install-card reveal">
+                    <div class="install-step">
+                        <div class="step-number">5</div>
+                        <h3>Installation Dépendances</h3>
+                    </div>
+                    <div class="install-content">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Packages Python</span>
+                                <button class="copy-btn" onclick="copyCode(this)">
+                                    <i class="fa-solid fa-copy"></i>
+                                </button>
+                            </div>
+                            <pre><code># Installer les dépendances
+pip install -r requirements.txt
+
+# Ou installation manuelle des packages principaux
+pip install openai whisper speechrecognition
+pip install flask requests numpy pandas
+pip install pyttsx3 beautifulsoup4 selenium</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="install-card reveal">
+                    <div class="install-step">
+                        <div class="step-number">6</div>
+                        <h3>Configuration API</h3>
+                    </div>
+                    <div class="install-content">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Fichier .env</span>
+                                <button class="copy-btn" onclick="copyCode(this)">
+                                    <i class="fa-solid fa-copy"></i>
+                                </button>
+                            </div>
+                            <pre><code># Créer le fichier .env
+OPENAI_API_KEY=votre_clé_openai_ici
+GOOGLE_API_KEY=votre_clé_google_ici
+ELEVENLABS_API_KEY=votre_clé_elevenlabs_ici
+
+# Clés API disponibles sur:
+# - OpenAI: https://platform.openai.com/api-keys
+# - Google: https://console.cloud.google.com/
+# - ElevenLabs: https://elevenlabs.io/app/settings/api-keys</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="install-card reveal">
+                    <div class="install-step">
+                        <div class="step-number">7</div>
+                        <h3>Lancement Jarvis</h3>
+                    </div>
+                    <div class="install-content">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Démarrage</span>
+                                <button class="copy-btn" onclick="copyCode(this)">
+                                    <i class="fa-solid fa-copy"></i>
+                                </button>
+                            </div>
+                            <pre><code># Lancer Jarvis (interface web)
+python main2.py
+
+# Ou lancer l'assistant vocal
+python jarvis_agent.py
+
+# Accéder à l'interface web:
+# http://localhost:8000</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="install-card reveal">
+                    <div class="install-step">
+                        <div class="step-number">8</div>
+                        <h3>Vérification Installation</h3>
+                    </div>
+                    <div class="install-content">
+                        <div class="verification-list">
+                            <div class="verify-item">
+                                <i class="fa-solid fa-check-circle"></i>
+                                <span>Interface web accessible sur localhost:8000</span>
+                            </div>
+                            <div class="verify-item">
+                                <i class="fa-solid fa-check-circle"></i>
+                                <span>Assistant vocal répond aux commandes</span>
+                            </div>
+                            <div class="verify-item">
+                                <i class="fa-solid fa-check-circle"></i>
+                                <span>API keys configurées et fonctionnelles</span>
+                            </div>
+                            <div class="verify-item">
+                                <i class="fa-solid fa-check-circle"></i>
+                                <span>Logs sans erreurs critiques</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="install-troubleshoot reveal">
+                <h3><i class="fa-solid fa-wrench"></i> Dépannage & Solutions</h3>
+                <div class="troubleshoot-grid">
+                    <div class="trouble-item">
+                        <h4>Python non reconnu</h4>
+                        <p>Ajoutez Python au PATH Windows ou réinstallez en cochant "Add Python to PATH"</p>
+                    </div>
+                    <div class="trouble-item">
+                        <h4>Erreur de dépendances</h4>
+                        <p>Mettez à jour pip: <code>python -m pip install --upgrade pip</code></p>
+                    </div>
+                    <div class="trouble-item">
+                        <h4>Problème d'API</h4>
+                        <p>Vérifiez que vos clés API sont valides et bien configurées dans .env</p>
+                    </div>
+                    <div class="trouble-item">
+                        <h4>Port déjà utilisé</h4>
+                        <p>Changez le port dans main2.py ou arrêtez les autres services sur le port 8000</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Section -->
+    <section class="tech" id="tech">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">TECHNOLOGIE</span>
+                <h2 class="section-title">L'Innovation Derrière Jarvis</h2>
+            </div>
+            <div class="tech-grid">
+                <div class="tech-card reveal">
+                    <div class="tech-icon">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
+                    <h3>Intelligence Artificielle</h3>
+                    <p>Basé sur les derniers modèles de machine learning pour une compréhension avancée du langage naturel.</p>
+                </div>
+                <div class="tech-card reveal">
+                    <div class="tech-icon">
+                        <i class="fa-solid fa-cloud"></i>
+                    </div>
+                    <h3>Cloud Computing</h3>
+                    <p>Infrastructure cloud scalable pour garantir des performances optimales 24/7.</p>
+                </div>
+                <div class="tech-card reveal">
+                    <div class="tech-icon">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h3>Sécurité Avancée</h3>
+                    <p>Chiffrement de bout en bout et protocoles de sécurité modernes pour protéger vos données.</p>
+                </div>
+                <div class="tech-card reveal">
+                    <div class="tech-icon">
+                        <i class="fa-solid fa-microchip"></i>
+                    </div>
+                    <h3>Traitement Neural</h3>
+                    <p>Réseaux de neurones profonds pour une analyse contextuelle et des réponses intelligentes.</p>
+                </div>
+                <div class="tech-card reveal">
+                    <div class="tech-icon">
+                        <i class="fa-solid fa-rocket"></i>
+                    </div>
+                    <h3>Performance Optimale</h3>
+                    <p>Temps de réponse inférieur à 100ms grâce à notre architecture optimisée.</p>
+                </div>
+                <div class="tech-card reveal">
+                    <div class="tech-icon">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <h3>API Ouverte</h3>
+                    <p>Intégration facile avec vos applications existantes via notre API RESTful.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">QUESTIONS FRÉQUENTES</span>
+                <h2 class="section-title">Tout Ce Que Vous Devez Savoir</h2>
+            </div>
+            <div class="faq-container">
+                <div class="faq-item reveal">
+                    <div class="faq-question">
+                        <h3>Qu'est-ce que Jarvis exactement ?</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Jarvis est un assistant intelligent basé sur l'IA qui vous aide à automatiser vos tâches quotidiennes, répondre à vos questions et vous assister dans vos projets grâce à une interface conversationnelle naturelle.</p>
+                    </div>
+                </div>
+                <div class="faq-item reveal">
+                    <div class="faq-question">
+                        <h3>Comment Jarvis protège-t-il mes données ?</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Nous utilisons un chiffrement AES-256 pour toutes vos communications. Vos données sont anonymisées et jamais partagées avec des tiers. Notre infrastructure respecte les normes GDPR les plus strictes.</p>
+                    </div>
+                </div>
+                <div class="faq-item reveal">
+                    <div class="faq-question">
+                        <h3>Sur quelles plateformes Jarvis fonctionne-t-il ?</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Jarvis est disponible sur web, mobile (iOS/Android), desktop (Windows/Mac/Linux) et peut être intégré via API dans vos applications existantes.</p>
+                    </div>
+                </div>
+                <div class="faq-item reveal">
+                    <div class="faq-question">
+                        <h3>Quelles sont les capacités de Jarvis ?</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Jarvis peut comprendre le langage naturel, générer du contenu, analyser des données, automatiser des tâches, programmer, et bien plus encore. Il apprend continuellement pour s'améliorer.</p>
+                    </div>
+                </div>
+                <div class="faq-item reveal">
+                    <div class="faq-question">
+                        <h3>Comment commencer à utiliser Jarvis ?</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Il suffit de créer un compte gratuitement, puis vous pouvez commencer à utiliser Jarvis immédiatement via notre interface web ou nos applications mobiles.</p>
+                    </div>
+                </div>
+                <div class="faq-item reveal">
+                    <div class="faq-question">
+                        <h3>Jarvis est-il disponible en français ?</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Oui ! Jarvis supporte parfaitement le français ainsi que plus de 50 autres langues avec une compréhension contextuelle avancée.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <h2>Contactez-Nous</h2>
+            <form class="contact-form" id="contactForm" action="https://api.web3forms.com/submit" method="POST">
+                <input type="hidden" name="access_key" value="42e1bd3d-5ef8-42c7-bb4b-cd7335bfbe16">
+                <input type="hidden" name="subject" value="Nouveau message depuis tomclair.tech">
+                <div class="form-group">
+                    <label for="name">Nom</label>
+                    <input type="text" id="name" name="name" required placeholder="Votre nom">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required placeholder="votre@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="5" required placeholder="Votre message..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">ENVOYER</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+<div class="footer-content">
+                <div class="footer-logo">
+                    <span class="logo-text">tomclair</span><span class="logo-dot">.tech</span>
+                    <p>Votre assistant intelligent</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#hero">Accueil</a>
+                    <a href="#features">Fonctionnalités</a>
+                    <a href="#tech">Technique</a>
+                    <a href="#faq">FAQ</a>
+                    <a href="#contact">Contact</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Jarvis. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js?v=5"></script>
+</body>
+</html>
