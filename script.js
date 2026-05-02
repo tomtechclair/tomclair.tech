@@ -1792,7 +1792,7 @@ function initJarvisGame() {
     let playerSequence = [];
     let score = 0;
     let level = 1;
-    let lives = 3;
+    let lives = 10;
     let isPlaying = false;
     let soundEnabled = true;
     
@@ -1820,7 +1820,7 @@ function initJarvisGame() {
         isPlaying = true;
         score = 0;
         level = 1;
-        lives = 3;
+        lives = 10;
         updateDisplay();
         nextRound();
     }
@@ -1874,11 +1874,12 @@ function initJarvisGame() {
             // Wrong tile
             lives--;
             updateDisplay();
+            playFailureSound();
             
             if (lives === 0) {
                 gameOver();
             } else {
-                showMessage('❌ Mauvaise tuile !', 'Réessayez la séquence...');
+                showMessage(`❌ Mauvaise tuile ! ${lives} vies restantes`, 'Réessayez la séquence...');
                 setTimeout(() => {
                     playerSequence = [];
                     showSequence();
@@ -1889,6 +1890,7 @@ function initJarvisGame() {
             score += level * 10;
             level++;
             updateDisplay();
+            playSuccessSound();
             
             showMessage('✅ Excellent !', `Niveau ${level} - Préparez-vous...`);
             setTimeout(() => {
@@ -1950,7 +1952,7 @@ function initJarvisGame() {
         playerSequence = [];
         score = 0;
         level = 1;
-        lives = 3;
+        lives = 10;
         updateDisplay();
         
         gameGrid.style.display = 'none';
@@ -1978,7 +1980,7 @@ function initJarvisGame() {
     function playSound(color) {
         if (!soundEnabled) return;
         
-        // Create simple beep sounds using Web Audio API
+        // Create varied sounds using Web Audio API
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const oscillator = audioContext.createOscillator();
         const gainNode = audioContext.createGain();
@@ -1986,21 +1988,71 @@ function initJarvisGame() {
         oscillator.connect(gainNode);
         gainNode.connect(audioContext.destination);
         
-        const frequencies = {
-            red: 261.63,    // C
-            blue: 329.63,   // E
-            green: 392.00,  // G
-            yellow: 523.25  // C
+        // Different sounds for each color
+        const soundTypes = {
+            red: { frequency: 261.63, type: 'square', duration: 0.3 },    // C - square wave
+            blue: { frequency: 329.63, type: 'sine', duration: 0.4 },     // E - sine wave
+            green: { frequency: 392.00, type: 'triangle', duration: 0.35 }, // G - triangle wave
+            yellow: { frequency: 523.25, type: 'sawtooth', duration: 0.25 } // C - sawtooth wave
         };
         
-        oscillator.frequency.value = frequencies[color];
-        oscillator.type = 'sine';
+        const sound = soundTypes[color];
+        
+        oscillator.frequency.value = sound.frequency;
+        oscillator.type = sound.type;
         
         gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + sound.duration);
         
         oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + 0.5);
+        oscillator.stop(audioContext.currentTime + sound.duration);
+    }
+    
+    // Add success and failure sounds
+    function playSuccessSound() {
+        if (!soundEnabled) return;
+        
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        // Ascending notes for success
+        oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C
+        oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E
+        oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // G
+        
+        oscillator.type = 'sine';
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+        
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.3);
+    }
+    
+    function playFailureSound() {
+        if (!soundEnabled) return;
+        
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        // Descending notes for failure
+        oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
+        oscillator.frequency.setValueAtTime(300, audioContext.currentTime + 0.1);
+        oscillator.frequency.setValueAtTime(200, audioContext.currentTime + 0.2);
+        
+        oscillator.type = 'sawtooth';
+        gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+        
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.3);
     }
     
     function showMessage(title, text) {
