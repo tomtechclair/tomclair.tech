@@ -1433,7 +1433,7 @@ function initQuiz() {
 
 // ===== USER COUNTER =====
 function initUserCounter() {
-    const counterElement = document.getElementById('userCounter');
+    const counterElement = document.getElementById('navUserCounter');
     if (!counterElement) return;
     
     // Nombre final d'utilisateurs (simulé)
