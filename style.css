@@ -240,6 +240,11 @@ body {
     padding: 0 2rem;
     z-index: 1;
     position: relative;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .hero-title {
@@ -408,6 +413,8 @@ body {
     display: flex;
     gap: 1rem;
     margin-bottom: 3rem;
+    justify-content: center;
+    align-items: center;
 }
 
 .social-link {
@@ -565,6 +572,10 @@ body {
 .section-header {
     text-align: center;
     margin-bottom: 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .section-tag {
@@ -586,8 +597,9 @@ body {
 
 .features-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 2rem;
+    justify-items: center;
 }
 
 .feature-card {
@@ -642,6 +654,7 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 2rem;
     margin-bottom: 4rem;
+    justify-items: center;
 }
 
 .install-card {
@@ -819,6 +832,7 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1.5rem;
+    justify-items: center;
 }
 
 .trouble-item {
@@ -866,6 +880,7 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 2rem;
+    justify-items: center;
 }
 
 .tech-card {
@@ -958,6 +973,9 @@ body {
 .faq-container {
     max-width: 800px;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .faq-item {
@@ -967,6 +985,8 @@ body {
     margin-bottom: 1rem;
     overflow: hidden;
     transition: var(--transition);
+    width: 100%;
+    max-width: 800px;
 }
 
 .faq-item:hover {
