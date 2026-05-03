@@ -2095,13 +2095,13 @@ function initDownloadButton() {
     
     // Add visual feedback for local file download
     downloadBtn.addEventListener('click', function(e) {
-        console.log('Download button clicked - downloading local ZIP file');
+        console.log('Download button clicked - downloading JARVIS_Setup_v4.zip');
         
         // Add visual feedback immediately
         const originalHTML = this.innerHTML;
         const originalStyle = this.style.background;
         
-        this.innerHTML = '<i class="fa-solid fa-download"></i> <span>Téléchargement en cours...</span>';
+        this.innerHTML = '<i class="fa-solid fa-download"></i> <span>Téléchargement de Jarvis v4...</span>';
         this.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
         
         // Reset after 2 seconds
