@@ -758,6 +758,7 @@ function initAllContent() {
     initMobileSwipeBlock();
     initMobileDownloadMessage();
     initMobileMenuToggle();
+    initDownloadButton();
     
     // Initialize game after a delay to ensure DOM is ready
     setTimeout(() => {
@@ -2085,6 +2086,36 @@ function initJarvisGame() {
             tempMessage.remove();
         }, 2000);
     }
+}
+
+// ===== DOWNLOAD BUTTON HANDLER =====
+function initDownloadButton() {
+    const downloadBtn = document.getElementById('downloadBtn');
+    if (!downloadBtn) return;
+    
+    // Add click event to handle download
+    downloadBtn.addEventListener('click', function(e) {
+        console.log('Download button clicked');
+        
+        // Show success message after a short delay
+        setTimeout(() => {
+            console.log('Download should be starting');
+        }, 1000);
+    });
+    
+    // Add success feedback when download starts
+    downloadBtn.addEventListener('mousedown', function() {
+        this.innerHTML = '<i class="fa-solid fa-check"></i> <span>Téléchargement en cours...</span>';
+        this.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+    });
+    
+    // Reset button after download
+    downloadBtn.addEventListener('mouseup', function() {
+        setTimeout(() => {
+            this.innerHTML = '<i class="fa-solid fa-download"></i> <span>Télécharger Jarvis</span>';
+            this.style.background = '';
+        }, 2000);
+    });
 }
 
 // ===== CONSOLE LOGO =====
