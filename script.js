@@ -2093,15 +2093,15 @@ function initDownloadButton() {
     const downloadBtn = document.getElementById('downloadBtn');
     if (!downloadBtn) return;
     
-    // Add visual feedback for GitHub releases page
+    // Add visual feedback for local file download
     downloadBtn.addEventListener('click', function(e) {
-        console.log('Download button clicked - opening GitHub releases');
+        console.log('Download button clicked - downloading local ZIP file');
         
         // Add visual feedback immediately
         const originalHTML = this.innerHTML;
         const originalStyle = this.style.background;
         
-        this.innerHTML = '<i class="fa-solid fa-external-link-alt"></i> <span>Ouverture de GitHub...</span>';
+        this.innerHTML = '<i class="fa-solid fa-download"></i> <span>Téléchargement local...</span>';
         this.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
         
         // Reset after 2 seconds
