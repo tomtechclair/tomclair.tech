@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App - Your Daily Forecast</title>
+    <script type="module" src="https://unpkg.com/parse@3.5.2/dist/parse.min.js"></script>
+    <script type="module" src="https://unpkg.com/espree@10.0.0/dist/espree.min.js"></script>
+    <script type="module" src="https://unpkg.com/@babel/standalone@7.24.0/babel.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: #0a0f1e; /* deep navy base */
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* ============================================ */
+        /* APPLE iOS / APPLE INTELLIGENCE BACKGROUND */
+        /* Animated aurora mesh gradient */
+        /* ============================================ */
+        
+        .ios-background {
+          position: fixed;
+          inset: 0;
+          z-index: -1;
+          overflow: hidden;
+          background: #0a0f1e; /* deep navy base */
+        }
+
+        /* ── Animated blobs ── */
+        .ios-background::before,
+        .ios-background::after {
+          content: '';
+          position: absolute;
+          border-radius: 50%;
+          filter: blur(80px);
+          animation: drift 12s ease-in-out infinite alternate;
+        }
+
+        .ios-background::before {
+          width: 60vw;
+          height: 60vw;
+          top: -15%;
+          left: -10%;
+          background: radial-gradient(circle, rgba(88, 130, 255, 0.55) 0%, rgba(120, 80, 255, 0.3) 50%, transparent 70%);
+          animation-duration: 14s;
+        }
+
+        .ios-background::after {
+          width: 50vw;
+          height: 50vw;
+          bottom: -10%;
+          right: -5%;
+          background: radial-gradient(circle, rgba(255, 100, 180, 0.45) 0%, rgba(255, 160, 80, 0.25) 50%, transparent 70%);
+          animation-duration: 11s;
+          animation-direction: alternate-reverse;
+        }
+
+        /* Extra blobs via children */
+        .blob {
+          position: absolute;
+          border-radius: 50%;
+          filter: blur(60px);
+          animation: drift var(--dur, 10s) ease-in-out infinite alternate;
+        }
+
+        .blob-teal {
+          width: 40vw; height: 40vw;
+          top: 30%; left: 25%;
+          background: radial-gradient(circle, rgba(0, 210, 200, 0.35) 0%, transparent 65%);
+          --dur: 9s;
+        }
+
+        .blob-gold {
+          width: 30vw; height: 30vw;
+          top: 60%; left: 10%;
+          background: radial-gradient(circle, rgba(255, 200, 80, 0.3) 0%, transparent 65%);
+          --dur: 13s;
+        }
+
+        @keyframes drift {
+          0%   { transform: translate(0, 0) scale(1); }
+          33%  { transform: translate(3%, 5%) scale(1.05); }
+          66%  { transform: translate(-4%, 2%) scale(0.97); }
+          100% { transform: translate(2%, -4%) scale(1.03); }
+        }
+
+        /* ── Noise grain overlay for depth ── */
+        .ios-noise {
+          position: fixed;
+          inset: 0;
+          z-index: 0;
+          pointer-events: none;
+          opacity: 0.04;
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+          background-size: 200px;
+        }
+        
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .weather-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(34, 42, 53, 0.37);
+        }
+        
+        .temperature {
+            font-size: 88px;
+            font-weight: 200;
+            line-height: 1;
+            margin: 10px 0;
+        }
+        
+        .city-name {
+            font-size: 32px;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            margin-bottom: 10px;
+        }
+        
+        .description {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        
+        .hourly-forecast {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+        
+        .hour-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            min-width: 44px;
+        }
+        
+        .hour-time {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .hour-temp {
+            font-size: 18px;
+            font-weight: 500;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 18px;
+        }
+        
+        .error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.18);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            color: #fca5a5;
+        }
+    </style>
+</head>
+<body>
+    <!-- Apple iOS Background Elements -->
+    <div class="ios-background"></div>
+    <div class="blob blob-teal"></div>
+    <div class="blob blob-gold"></div>
+    <div class="ios-noise"></div>
+    
+    <div id="app">
+        <div class="loading">
+            <div>🌤 Chargement de l'application météo...</div>
+        </div>
+    </div>
+
+    <script type="text/babel" data-type="module" data-presets="typescript,react">
+        import React, { useState, useEffect } from 'react';
+        import { createRoot } from 'react-dom/client';
+
+        // API Open-Meteo
+        const fetchWeatherData = async (city) => {
+            const url = `https://api.open-meteo.com/v1/forecast?latitude=${city.latitude}&longitude=${city.longitude}` +
+                `&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,wind_direction_10m,weather_code,is_day,uv_index,visibility,pressure_msl,precipitation` +
+                `&hourly=temperature_2m,weather_code,is_day,precipitation_probability,relative_humidity_2m,wind_speed_10m` +
+                `&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max` +
+                `&timezone=auto&forecast_days=7&wind_speed_unit=kmh&temperature_unit=celsius`;
+            
+            const response = await fetch(url);
+            return await response.json();
+        };
+
+        // Description météo
+        const describeWeather = (code, isDay) => {
+            const weatherTypes = {
+                0: { label: 'Ciel dégagé', icon: '☀️' },
+                1: { label: 'Ciel dégagé', icon: '🌤' },
+                2: { label: 'Partiellement nuageux', icon: '⛅' },
+                3: { label: 'Couvert', icon: '☁️' },
+                45: { label: 'Brouillard', icon: '🌫' },
+                48: { label: 'Brouillard', icon: '🌫' },
+                51: { label: 'Bruine légère', icon: '🌦' },
+                53: { label: 'Bruine modérée', icon: '🌧' },
+                55: { label: 'Bruine dense', icon: '🌧' },
+                56: { label: 'Bruine verglaçante', icon: '🌨' },
+                57: { label: 'Bruine verglaçante', icon: '🌨' },
+                61: { label: 'Pluie', icon: '🌧' },
+                63: { label: 'Pluie modérée', icon: '🌧' },
+                65: { label: 'Forte pluie', icon: '⛈' },
+                66: { label: 'Pluie verglaçante', icon: '🌨' },
+                67: { label: 'Pluie verglaçante', icon: '🌨' },
+                71: { label: 'Neige légère', icon: '🌨' },
+                73: { label: 'Neige modérée', icon: '❄️' },
+                75: { label: 'Neige dense', icon: '❄️' },
+                77: { label: 'Neige verglaçante', icon: '🌨' },
+                80: { label: 'Averses', icon: '🌦' },
+                81: { label: 'Averses', icon: '🌧' },
+                82: { label: 'Averses', icon: '🌧' },
+                85: { label: 'Neige', icon: '❄️' },
+                86: { label: 'Neige', icon: '❄️' },
+                95: { label: 'Orage', icon: '⛈' },
+                96: { label: 'Orage', icon: '⛈' },
+                99: { label: 'Orage', icon: '⛈' }
+            };
+            
+            return weatherTypes[code] || { label: 'Inconnu', icon: '❓' };
+        };
+
+        // Composant principal
+        const WeatherApp = () => {
+            const [city, setCity] = useState({
+                id: 4164138,
+                name: "Paris",
+                country: "France",
+                latitude: 48.8566,
+                longitude: 2.3522,
+                timezone: "auto"
+            });
+            
+            const [weatherData, setWeatherData] = useState(null);
+            const [loading, setLoading] = useState(true);
+            const [error, setError] = useState(null);
+
+            useEffect(() => {
+                const loadData = async () => {
+                    try {
+                        setLoading(true);
+                        setError(null);
+                        const data = await fetchWeatherData(city);
+                        setWeatherData(data);
+                    } catch (err) {
+                        setError('Impossible de charger les données météo');
+                        console.error(err);
+                    } finally {
+                        setLoading(false);
+                    }
+                };
+
+                loadData();
+            }, [city]);
+
+            // Obtenir l'heure locale
+            const now = new Date();
+            const currentHour = now.getHours();
+            const isDayTime = currentHour >= 6 && currentHour < 20;
+
+            // Prévisions horaires
+            const hourlySlice = weatherData ? (() => {
+                const idx = 0; // Commencer par l'heure actuelle
+                const endIdx = Math.min(idx + 24, weatherData.hourly.time.length);
+                const result = [];
+
+                for (let i = idx; i < endIdx; i++) {
+                    const hourDate = new Date(weatherData.hourly.time[i]);
+                    const hour = hourDate.getHours();
+                    const hourIsDay = hour >= 6 && hour < 20;
+                    
+                    const temp = Math.round(weatherData.hourly.temperature_2m[i]);
+                    const weather = describeWeather(weatherData.hourly.weather_code[i], hourIsDay ? 1 : 0);
+                    
+                    const progressiveHour = (currentHour + (i - idx)) % 24;
+                    
+                    result.push({
+                        time: i === idx ? "mtn" : `${progressiveHour.toString().padStart(2, '0')}H`,
+                        temp: temp,
+                        info: weather,
+                        isDay: hourIsDay,
+                        hour: hour
+                    });
+                }
+                return result;
+            })() : [];
+
+            if (loading) {
+                return (
+                    <div class="loading">
+                        <div>🌤 Chargement de l'application météo...</div>
+                    </div>
+                );
+            }
+
+            if (error) {
+                return (
+                    <div class="error">
+                        <div>❌ {error}</div>
+                    </div>
+                );
+            }
+
+            if (!weatherData || !weatherData.current) {
+                return (
+                    <div class="loading">
+                        <div>🌤 Chargement des données météo...</div>
+                    </div>
+                );
+            }
+
+            const currentWeather = describeWeather(weatherData.current.weather_code, isDayTime ? 1 : 0);
+
+            return (
+                <div class="container">
+                    <div class="weather-card">
+                        <div class="city-name">{city.name}</div>
+                        <div class="temperature">
+                            {Math.round(weatherData.current.temperature_2m)}°
+                        </div>
+                        <div class="description">{currentWeather.label}</div>
+                        <div>
+                            Max.: {Math.round(weatherData.daily.temperature_2m_max[0])}°  Min.: {Math.round(weatherData.daily.temperature_2m_min[0])}°
+                        </div>
+                    </div>
+
+                    <div class="weather-card">
+                        <div style={{ marginBottom: '10px', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.8 }}>
+                            {currentWeather.icon} Prévisions horaires
+                        </div>
+                        <div class="hourly-forecast">
+                            {hourlySlice.map((hour, i) => (
+                                <div key={i} class="hour-item">
+                                    <div class="hour-time">{hour.time}</div>
+                                    <div style={{ fontSize: '24px' }}>{hour.info.icon}</div>
+                                    <div class="hour-temp">{hour.temp}°</div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div class="weather-card">
+                        <div style={{ fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.05em', opacity: 0.8 }}>
+                            📊 Prévisions sur 7 jours
+                        </div>
+                        <div style={{ marginTop: '10px' }}>
+                            {weatherData.daily.time.map((_, i) => {
+                                const dayWeather = describeWeather(weatherData.daily.weather_code[i], 1);
+                                const days = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+                                const dayName = i === 0 ? "Aujourd'hui" : days[new Date(weatherData.daily.time[i]).getDay()];
+                                
+                                return (
+                                    <div key={i} style={{ 
+                                        display: 'flex', 
+                                        alignItems: 'center', 
+                                        gap: '12px', 
+                                        padding: '8px 0',
+                                        borderBottom: i !== weatherData.daily.time.length - 1 ? '1px solid rgba(255,255,255,0.1)' : 'none'
+                                    }}>
+                                        <div style={{ width: '80px', fontSize: '14px' }}>{dayName}</div>
+                                        <div style={{ fontSize: '20px' }}>{dayWeather.icon}</div>
+                                        <div style={{ textAlign: 'right', fontSize: '14px' }}>
+                                            Min: {Math.round(weatherData.daily.temperature_2m_min[i])}°
+                                        </div>
+                                        <div style={{ textAlign: 'right', fontSize: '14px' }}>
+                                            Max: {Math.round(weatherData.daily.temperature_2m_max[i])}°
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Rendu
+        const root = createRoot(document.getElementById('app'));
+        root.render(<WeatherApp />);
+    </script>
+</body>
+</html>
