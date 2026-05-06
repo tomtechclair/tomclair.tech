@@ -19,45 +19,76 @@ function showWeekendUpdateAlert() {
                     <i class="fa-solid fa-bell"></i>
                 </div>
                 <div class="alert-title">
-                    <h2>🚀 MISE À JOUR WEEKEND !</h2>
-                    <p>Nouvelles fonctionnalités et améliorations majeures</p>
+                    <h2>🚀 MISE À JOUR SITE TOM !</h2>
+                    <p>Ce weekend : Nouveau design et fonctionnalités majeures !</p>
                 </div>
                 <button class="alert-close" onclick="closeWeekendAlert()">
                     <i class="fa-solid fa-times"></i>
                 </button>
             </div>
             <div class="alert-details">
+                <div class="countdown-section">
+                    <div class="countdown-title">
+                        <i class="fa-solid fa-hourglass-half"></i>
+                        <span>TEMPS RESTANT AVANT LE DÉBUT</span>
+                    </div>
+                    <div class="countdown-timer" id="countdownTimer">
+                        <div class="time-unit">
+                            <div class="time-value" id="days">00</div>
+                            <div class="time-label">Jours</div>
+                        </div>
+                        <div class="time-separator">:</div>
+                        <div class="time-unit">
+                            <div class="time-value" id="hours">00</div>
+                            <div class="time-label">Heures</div>
+                        </div>
+                        <div class="time-separator">:</div>
+                        <div class="time-unit">
+                            <div class="time-value" id="minutes">00</div>
+                            <div class="time-label">Minutes</div>
+                        </div>
+                        <div class="time-separator">:</div>
+                        <div class="time-unit">
+                            <div class="time-value" id="seconds">00</div>
+                            <div class="time-label">Secondes</div>
+                        </div>
+                    </div>
+                    <div class="countdown-date">
+                        <i class="fa-solid fa-calendar-check"></i>
+                        <span>Début : Samedi 9 Mai 2026</span>
+                    </div>
+                </div>
                 <div class="feature-list">
                     <div class="feature-item">
                         <i class="fa-solid fa-sparkles"></i>
-                        <span>Interface utilisateur complètement repensée</span>
+                        <span>Design TOM entièrement refait</span>
                     </div>
                     <div class="feature-item">
                         <i class="fa-solid fa-rocket"></i>
-                        <span>Performance optimisée et chargement ultra-rapide</span>
+                        <span>Performance ultra-optimisée</span>
                     </div>
                     <div class="feature-item">
                         <i class="fa-solid fa-shield-halved"></i>
-                        <span>Sécurité renforcée et protection des données</span>
+                        <span>Sécurité renforcée maximale</span>
                     </div>
                     <div class="feature-item">
                         <i class="fa-solid fa-mobile-alt"></i>
-                        <span>Expérience mobile 100% responsive</span>
+                        <span>Mobile TOM 100% parfait</span>
                     </div>
                     <div class="feature-item">
                         <i class="fa-solid fa-code"></i>
-                        <span>Nouvelles fonctionnalités avancées</span>
+                        <span>Nouvelles fonctionnalités TOM</span>
                     </div>
                 </div>
                 <div class="alert-footer">
                     <div class="alert-timing">
-                        <i class="fa-solid fa-clock"></i>
-                        <span>Déploiement : Samedi et Dimanche</span>
+                        <i class="fa-solid fa-tools"></i>
+                        <span>Maintenance : Samedi 9 et Dimanche 10 Mai</span>
                     </div>
                     <div class="alert-cta">
                         <button class="alert-btn" onclick="closeWeekendAlert()">
                             <i class="fa-solid fa-thumbs-up"></i>
-                            <span>Super !</span>
+                            <span>Parfait !</span>
                         </button>
                     </div>
                 </div>
@@ -65,23 +96,24 @@ function showWeekendUpdateAlert() {
         </div>
     `;
     
-    // Ajouter les styles CSS améliorés
+    // Ajouter les styles CSS améliorés et plus gros
     alertDiv.style.cssText = `
         position: fixed;
-        top: 80px;
+        top: 60px;
         right: 20px;
         background: linear-gradient(135deg, #00d4ff 0%, #0066ff 50%, #7c3aed 100%);
         color: white;
         padding: 0;
-        border-radius: 20px;
-        box-shadow: 0 20px 60px rgba(0, 212, 255, 0.5);
+        border-radius: 25px;
+        box-shadow: 0 25px 80px rgba(0, 212, 255, 0.6);
         z-index: 10000;
-        max-width: 500px;
-        min-width: 400px;
+        max-width: 600px;
+        min-width: 500px;
         animation: slideInRight 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        backdrop-filter: blur(20px);
-        border: 2px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(25px);
+        border: 3px solid rgba(255, 255, 255, 0.4);
         font-family: 'Rajdhani', sans-serif;
+        font-size: 18px;
     `;
     
     // Ajouter le CSS pour l'animation améliorée
@@ -147,12 +179,12 @@ function showWeekendUpdateAlert() {
         }
         
         #weekendAlert .alert-title h2 {
-            margin: 0 0 8px 0;
-            font-size: 24px;
+            margin: 0 0 10px 0;
+            font-size: 28px;
             font-weight: 900;
             color: white;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             line-height: 1.2;
         }
         
@@ -188,7 +220,80 @@ function showWeekendUpdateAlert() {
         }
         
         #weekendAlert .alert-details {
-            padding: 20px 25px;
+            padding: 25px 30px;
+        }
+        
+        #weekendAlert .countdown-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        #weekendAlert .countdown-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #00ff88;
+        }
+        
+        #weekendAlert .countdown-timer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+        
+        #weekendAlert .time-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 10px;
+            min-width: 60px;
+        }
+        
+        #weekendAlert .time-value {
+            font-size: 24px;
+            font-weight: 900;
+            color: #00ff88;
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+        
+        #weekendAlert .time-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+            text-transform: uppercase;
+        }
+        
+        #weekendAlert .time-separator {
+            font-size: 20px;
+            font-weight: 900;
+            color: #00ff88;
+            margin: 0 5px;
+        }
+        
+        #weekendAlert .countdown-date {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            opacity: 0.9;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        #weekendAlert .countdown-date i {
+            color: #00ff88;
         }
         
         #weekendAlert .feature-list {
@@ -324,7 +429,55 @@ function showWeekendUpdateAlert() {
     document.head.appendChild(style);
     document.body.appendChild(alertDiv);
     
-    // Plus de fermeture automatique - l'utilisateur doit cliquer sur "Super"
+    // Démarrer le compte à rebours
+    startCountdown();
+    
+    // Plus de fermeture automatique - l'utilisateur doit cliquer sur "Parfait"
+}
+
+function startCountdown() {
+    // Date cible : Samedi 9 Mai 2026 00:00:00
+    var targetDate = new Date('2026-05-09T00:00:00');
+    
+    function updateCountdown() {
+        var now = new Date();
+        var difference = targetDate - now;
+        
+        if (difference > 0) {
+            var days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((difference % (1000 * 60)) / 1000);
+            
+            // Mettre à jour les éléments
+            var daysElement = document.getElementById('days');
+            var hoursElement = document.getElementById('hours');
+            var minutesElement = document.getElementById('minutes');
+            var secondsElement = document.getElementById('seconds');
+            
+            if (daysElement) daysElement.textContent = days.toString().padStart(2, '0');
+            if (hoursElement) hoursElement.textContent = hours.toString().padStart(2, '0');
+            if (minutesElement) minutesElement.textContent = minutes.toString().padStart(2, '0');
+            if (secondsElement) secondsElement.textContent = seconds.toString().padStart(2, '0');
+        } else {
+            // Le countdown est terminé
+            var daysElement = document.getElementById('days');
+            var hoursElement = document.getElementById('hours');
+            var minutesElement = document.getElementById('minutes');
+            var secondsElement = document.getElementById('seconds');
+            
+            if (daysElement) daysElement.textContent = '00';
+            if (hoursElement) hoursElement.textContent = '00';
+            if (minutesElement) minutesElement.textContent = '00';
+            if (secondsElement) secondsElement.textContent = '00';
+        }
+    }
+    
+    // Mettre à jour immédiatement
+    updateCountdown();
+    
+    // Mettre à jour chaque seconde
+    setInterval(updateCountdown, 1000);
 }
 
 function closeWeekendAlert() {
