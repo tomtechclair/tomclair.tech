@@ -46,7 +46,7 @@ function showWeekendUpdateAlert() {
                     </div>
                     <div class="feature-item">
                         <i class="fa-solid fa-code"></i>
-                        <span>Nouvelles fonctionnalités Jarvis avancées</span>
+                        <span>Nouvelles fonctionnalités avancées</span>
                     </div>
                 </div>
                 <div class="alert-footer">
@@ -324,10 +324,7 @@ function showWeekendUpdateAlert() {
     document.head.appendChild(style);
     document.body.appendChild(alertDiv);
     
-    // Fermeture automatique après 10 secondes
-    setTimeout(function() {
-        closeWeekendAlert();
-    }, 10000);
+    // Plus de fermeture automatique - l'utilisateur doit cliquer sur "Super"
 }
 
 function closeWeekendAlert() {
