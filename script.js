@@ -1,5 +1,5 @@
 window.addEventListener('load', function() {
-    initLoadingScreen();
+    showWeekendUpdateAlert();
     initScrollProgress();
     initBackToTop();
     initMobileMenu();
@@ -8,46 +8,164 @@ window.addEventListener('load', function() {
     initSmoothScroll();
 });
 
-function initLoadingScreen() {
-    var overlay = document.getElementById('loadingOverlay');
-    var closeBtn = document.getElementById('loadingCloseBtn');
+function showWeekendUpdateAlert() {
+    // Créer une alerte stylisée pour la mise à jour du weekend
+    var alertDiv = document.createElement('div');
+    alertDiv.id = 'weekendAlert';
+    alertDiv.innerHTML = `
+        <div class="alert-content">
+            <div class="alert-icon">
+                <i class="fa-solid fa-bell"></i>
+            </div>
+            <div class="alert-text">
+                <h3>🚀 Mise à Jour Weekend !</h3>
+                <p>Nouvelles fonctionnalités et améliorations arrivent ce weekend sur tomclair.tech !</p>
+            </div>
+            <button class="alert-close" onclick="closeWeekendAlert()">
+                <i class="fa-solid fa-times"></i>
+            </button>
+        </div>
+    `;
     
-    if (!overlay) return;
+    // Ajouter les styles CSS
+    alertDiv.style.cssText = `
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        background: linear-gradient(135deg, #00d4ff 0%, #0066ff 100%);
+        color: white;
+        padding: 0;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);
+        z-index: 10000;
+        max-width: 400px;
+        animation: slideInRight 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    `;
     
-    // Ajouter des animations premium au chargement
-    var loadingContent = overlay.querySelector('.loading-content');
-    var loadingText = overlay.querySelector('.loading-text');
-    var loadingSubtext = overlay.querySelector('.loading-subtext');
-    
-    // Animation d'apparition progressive
-    setTimeout(function() {
-        if (loadingContent) {
-            loadingContent.style.opacity = '0';
-            loadingContent.style.transform = 'translateY(30px)';
-            loadingContent.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
-            
-            setTimeout(function() {
-                loadingContent.style.opacity = '1';
-                loadingContent.style.transform = 'translateY(0)';
-            }, 100);
+    // Ajouter le CSS pour l'animation
+    var style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
-    }, 100);
+        
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+        
+        #weekendAlert .alert-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            position: relative;
+        }
+        
+        #weekendAlert .alert-icon {
+            font-size: 24px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        #weekendAlert .alert-text h3 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+        }
+        
+        #weekendAlert .alert-text p {
+            margin: 0;
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+        
+        #weekendAlert .alert-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        #weekendAlert .alert-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+        
+        @media (max-width: 768px) {
+            #weekendAlert {
+                top: 80px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+            
+            #weekendAlert .alert-content {
+                padding: 15px;
+                gap: 10px;
+            }
+            
+            #weekendAlert .alert-icon {
+                font-size: 20px;
+            }
+            
+            #weekendAlert .alert-text h3 {
+                font-size: 14px;
+            }
+            
+            #weekendAlert .alert-text p {
+                font-size: 12px;
+            }
+        }
+    `;
     
-    // Fermeture automatique après 2 secondes
+    document.head.appendChild(style);
+    document.body.appendChild(alertDiv);
+    
+    // Fermeture automatique après 8 secondes
     setTimeout(function() {
-        overlay.classList.add('hidden');
+        closeWeekendAlert();
+    }, 8000);
+}
+
+function closeWeekendAlert() {
+    var alert = document.getElementById('weekendAlert');
+    if (alert) {
+        alert.style.animation = 'slideOutRight 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
         setTimeout(function() {
-            overlay.style.display = 'none';
-        }, 800);
-    }, 2000);
-    
-    if (closeBtn) {
-        closeBtn.addEventListener('click', function() {
-            overlay.classList.add('hidden');
-            setTimeout(function() {
-                overlay.style.display = 'none';
-            }, 800);
-        });
+            alert.remove();
+        }, 600);
     }
 }
 
