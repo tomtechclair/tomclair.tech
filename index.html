@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather App - Your Daily Forecast</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <style>
         * {
             margin: 0;
@@ -261,6 +264,14 @@
         .hourly-container::-webkit-scrollbar-thumb:hover {
             background: rgba(255, 255, 255, 0.5);
         }
+
+        .version-info {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            font-size: 10px;
+            opacity: 0.5;
+        }
     </style>
 </head>
 <body>
@@ -279,7 +290,7 @@
                 `&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,wind_direction_10m,weather_code,is_day,uv_index,visibility,pressure_msl,precipitation` +
                 `&hourly=temperature_2m,weather_code,is_day,precipitation_probability,relative_humidity_2m,wind_speed_10m` +
                 `&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max` +
-                `&timezone=auto&forecast_days=7&wind_speed_unit=kmh&temperature_unit=celsius`;
+                `&timezone=auto&forecast_days=7&wind_speed_unit=kmh&temperature_unit=celsius&_=${Date.now()}`;
             
             try {
                 const response = await fetch(url);
@@ -464,5 +475,9 @@
         // Démarrer l'application lorsque le DOM est chargé
         document.addEventListener('DOMContentLoaded', initWeatherApp);
     </script>
-</body>
-</html>
+<div class="version-info" id="versionInfo">v1.0</div>
+
+    <script>
+        // Version pour forcer la mise à jour
+        const APP_VERSION = '1.0.' + Date.now();
+        document.getElementById('versionInfo').textContent = APP_VERSION;
