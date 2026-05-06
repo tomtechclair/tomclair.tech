@@ -168,9 +168,63 @@ body {
     text-transform: uppercase;
 }
 
+.intro-features {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: featuresFadeIn 1s ease-out 1.5s forwards;
+}
+
+@keyframes featuresFadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+}
+
+.intro-features .feature-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.intro-features .feature-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 212, 255, 0.2);
+}
+
+.intro-features .feature-item i {
+    font-size: 1.5rem;
+    color: #00d4ff;
+    margin-bottom: 0.5rem;
+}
+
+.intro-features .feature-item span {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
 .intro-loading {
     opacity: 0;
-    animation: loadingFadeIn 1s ease-out 2s forwards;
+    animation: loadingFadeIn 1s ease-out 2.5s forwards;
 }
 
 @keyframes loadingFadeIn {
@@ -260,6 +314,22 @@ body {
     
     .tagline-text {
         font-size: 1rem;
+    }
+    
+    .intro-features {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .intro-features .feature-item {
+        flex-direction: row;
+        justify-content: center;
+        gap: 1rem;
+        padding: 0.8rem 1rem;
+    }
+    
+    .intro-features .feature-item i {
+        margin-bottom: 0;
     }
     
     .loading-bar {
