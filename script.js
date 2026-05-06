@@ -14,20 +14,39 @@ function initLoadingScreen() {
     
     if (!overlay) return;
     
-    // Afficher l'overlay très brièvement puis le fermer automatiquement
+    // Ajouter des animations premium au chargement
+    var loadingContent = overlay.querySelector('.loading-content');
+    var loadingText = overlay.querySelector('.loading-text');
+    var loadingSubtext = overlay.querySelector('.loading-subtext');
+    
+    // Animation d'apparition progressive
+    setTimeout(function() {
+        if (loadingContent) {
+            loadingContent.style.opacity = '0';
+            loadingContent.style.transform = 'translateY(30px)';
+            loadingContent.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+            
+            setTimeout(function() {
+                loadingContent.style.opacity = '1';
+                loadingContent.style.transform = 'translateY(0)';
+            }, 100);
+        }
+    }, 100);
+    
+    // Fermeture automatique après 2 secondes
     setTimeout(function() {
         overlay.classList.add('hidden');
         setTimeout(function() {
             overlay.style.display = 'none';
-        }, 300);
-    }, 1000); // 1 seconde au lieu de 20 secondes
+        }, 800);
+    }, 2000);
     
     if (closeBtn) {
         closeBtn.addEventListener('click', function() {
             overlay.classList.add('hidden');
             setTimeout(function() {
                 overlay.style.display = 'none';
-            }, 300);
+            }, 800);
         });
     }
 }
@@ -145,16 +164,43 @@ function initSmoothScroll() {
             
             if (targetSection) {
                 var offsetTop = targetSection.offsetTop - 80;
-                window.scrollTo({
-                    top: offsetTop,
-                    behavior: 'smooth'
-                });
                 
-                // Update active nav link
+                // Animation premium avec easing personnalisé
+                var startPosition = window.pageYOffset;
+                var distance = offsetTop - startPosition;
+                var duration = 1200; // 1.2 secondes
+                var startTime = null;
+                
+                function easeInOutCubic(t) {
+                    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+                }
+                
+                function animateScroll(currentTime) {
+                    if (startTime === null) startTime = currentTime;
+                    var timeElapsed = currentTime - startTime;
+                    var progress = Math.min(timeElapsed / duration, 1);
+                    var easeProgress = easeInOutCubic(progress);
+                    
+                    window.scrollTo(0, startPosition + (distance * easeProgress));
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(animateScroll);
+                    }
+                }
+                
+                requestAnimationFrame(animateScroll);
+                
+                // Update active nav link avec animation
                 navLinks.forEach(function(l) {
                     l.classList.remove('active');
                 });
                 this.classList.add('active');
+                
+                // Ajouter un effet de pulse sur la section cible
+                targetSection.style.animation = 'sectionPulse 0.6s ease-out';
+                setTimeout(function() {
+                    targetSection.style.animation = '';
+                }, 600);
             }
         });
     });
