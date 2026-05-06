@@ -101,7 +101,7 @@ function showWeekendUpdateAlert() {
                         <i class="fa-solid fa-shield-halved"></i>
                         <span>Sécurité renforcée maximale</span>
                     </div>
-                                    </div>
+                </div>
                 <div class="alert-footer">
                     <div class="alert-timing">
                         <i class="fa-solid fa-tools"></i>
