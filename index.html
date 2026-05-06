@@ -3,1108 +3,262 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather App - Modern Design</title>
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <meta name="description" content="Application météo moderne avec design élégant">
-    <meta name="keywords" content="météo, weather, prévisions, température, design moderne">
-    <meta name="author" content="Weather App">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: white;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        .background-pattern {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 40% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
-            z-index: 0;
-        }
-
-        .floating-shapes {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        .shape {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            animation: float 20s infinite ease-in-out;
-        }
-
-        .shape-1 {
-            width: 300px;
-            height: 300px;
-            top: 10%;
-            left: 10%;
-            animation-delay: 0s;
-        }
-
-        .shape-2 {
-            width: 200px;
-            height: 200px;
-            top: 60%;
-            right: 10%;
-            animation-delay: 5s;
-        }
-
-        .shape-3 {
-            width: 150px;
-            height: 150px;
-            bottom: 20%;
-            left: 30%;
-            animation-delay: 10s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            25% { transform: translateY(-20px) rotate(90deg); }
-            50% { transform: translateY(0px) rotate(180deg); }
-            75% { transform: translateY(20px) rotate(270deg); }
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            position: relative;
-            z-index: 10;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 60px;
-            animation: fadeInDown 0.8s ease-out;
-        }
-
-        .header h1 {
-            font-size: 3.5rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #fff 0%, rgba(255, 255, 255, 0.8) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .weather-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-
-        .weather-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 30px;
-            transition: all 0.3s ease;
-            animation: fadeInUp 0.8s ease-out;
-            animation-fill-mode: both;
-        }
-
-        .weather-card:nth-child(1) { animation-delay: 0.1s; }
-        .weather-card:nth-child(2) { animation-delay: 0.2s; }
-        .weather-card:nth-child(3) { animation-delay: 0.3s; }
-
-        .weather-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 25px;
-        }
-
-        .card-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        .card-icon {
-            font-size: 2rem;
-            opacity: 0.8;
-        }
-
-        .main-weather {
-            text-align: center;
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            margin-bottom: 30px;
-        }
-
-        .weather-icon-main {
-            font-size: 6rem;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .temperature-main {
-            font-size: 4rem;
-            font-weight: 300;
-            margin-bottom: 10px;
-            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .weather-description {
-            font-size: 1.3rem;
-            opacity: 0.9;
-            margin-bottom: 15px;
-        }
-
-        .weather-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .detail-item {
-            text-align: center;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            transition: all 0.3s ease;
-        }
-
-        .detail-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-5px);
-        }
-
-        .detail-value {
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .detail-label {
-            font-size: 0.9rem;
-            opacity: 0.7;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .hourly-forecast {
-            margin-top: 30px;
-        }
-
-        .hourly-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-            gap: 15px;
-        }
-
-        .hour-item {
-            text-align: center;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            transition: all 0.3s ease;
-        }
-
-        .hour-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: scale(1.05);
-        }
-
-        .hour-time {
-            font-size: 0.9rem;
-            opacity: 0.7;
-            margin-bottom: 10px;
-        }
-
-        .hour-icon {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-
-        .hour-temp {
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-
-        .daily-forecast {
-            margin-top: 30px;
-        }
-
-        .daily-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .daily-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            transition: all 0.3s ease;
-        }
-
-        .daily-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateX(10px);
-        }
-
-        .daily-day {
-            font-size: 1.1rem;
-            font-weight: 500;
-            min-width: 100px;
-        }
-
-        .daily-icon {
-            font-size: 1.5rem;
-            margin: 0 20px;
-        }
-
-        .daily-temps {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .daily-min, .daily-max {
-            font-size: 1rem;
-            font-weight: 500;
-        }
-
-        .daily-min {
-            opacity: 0.7;
-        }
-
-        .refresh-btn {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 15px;
-            padding: 15px 30px;
-            color: white;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 30px;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .refresh-btn:hover {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2));
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .loading {
-            text-align: center;
-            padding: 60px;
-            font-size: 1.2rem;
-        }
-
-        .error {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            border-radius: 15px;
-            padding: 30px;
-            text-align: center;
-            color: #fca5a5;
-        }
-
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2.5rem;
-            }
-            
-            .weather-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .main-weather {
-                padding: 30px 20px;
-            }
-            
-            .temperature-main {
-                font-size: 3rem;
-            }
-            
-            .weather-details {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-    </style>
-
-        .ios-background {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            overflow: hidden;
-            background: #0a0f1e;
-        }
-
-        .ios-background::before,
-        .ios-background::after {
-            content: '';
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            animation: drift 12s ease-in-out infinite alternate;
-        }
-
-        .ios-background::before {
-            width: 60vw;
-            height: 60vw;
-            top: -15%;
-            left: -10%;
-            background: radial-gradient(circle, rgba(88, 130, 255, 0.55) 0%, rgba(120, 80, 255, 0.3) 50%, transparent 70%);
-            animation-duration: 14s;
-        }
-
-        .ios-background::after {
-            width: 50vw;
-            height: 50vw;
-            bottom: -10%;
-            right: -5%;
-            background: radial-gradient(circle, rgba(255, 100, 180, 0.45) 0%, rgba(255, 160, 80, 0.25) 50%, transparent 70%);
-            animation-duration: 11s;
-            animation-direction: alternate-reverse;
-        }
-
-        .blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(60px);
-            animation: drift var(--dur, 10s) ease-in-out infinite alternate;
-        }
-
-        .blob-teal {
-            width: 40vw; height: 40vw;
-            top: 30%; left: 25%;
-            background: radial-gradient(circle, rgba(0, 210, 200, 0.35) 0%, transparent 65%);
-            --dur: 9s;
-        }
-
-        .blob-gold {
-            width: 30vw; height: 30vw;
-            top: 60%; left: 10%;
-            background: radial-gradient(circle, rgba(255, 200, 80, 0.3) 0%, transparent 65%);
-            --dur: 13s;
-        }
-
-        @keyframes drift {
-            0%   { transform: translate(0, 0) scale(1); }
-            33%  { transform: translate(3%, 5%) scale(1.05); }
-            66%  { transform: translate(-4%, 2%) scale(0.97); }
-            100% { transform: translate(2%, -4%) scale(1.03); }
-        }
-
-        .ios-noise {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-            opacity: 0.04;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3Cfilter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            background-size: 200px;
-        }
-        
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 20px;
-            position: relative;
-            z-index: 10;
-        }
-        
-        .weather-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 32px rgba(34, 42, 53, 0.37);
-        }
-
-        .location-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 30px;
-        }
-
-        .location-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .location-icon {
-            width: 24px;
-            height: 24px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-        }
-
-        .location-text {
-            font-size: 18px;
-            font-weight: 500;
-        }
-
-        .menu-icon {
-            width: 24px;
-            height: 24px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        .main-weather {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .weather-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-        }
-
-        .temperature {
-            font-size: 72px;
-            font-weight: 200;
-            line-height: 1;
-            margin-bottom: 10px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .weather-description {
-            font-size: 20px;
-            font-weight: 400;
-            opacity: 0.9;
-            margin-bottom: 5px;
-        }
-
-        .feels-like {
-            font-size: 16px;
-            opacity: 0.7;
-        }
-
-        .weather-details {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .detail-card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 15px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .detail-icon {
-            font-size: 20px;
-            margin-bottom: 8px;
-        }
-
-        .detail-value {
-            font-size: 18px;
-            font-weight: 500;
-            margin-bottom: 4px;
-        }
-
-        .detail-label {
-            font-size: 12px;
-            opacity: 0.7;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .hourly-forecast {
-            margin-bottom: 30px;
-        }
-
-        .section-title {
-            font-size: 16px;
-            font-weight: 500;
-            margin-bottom: 15px;
-            opacity: 0.9;
-        }
-
-        .hourly-container {
-            display: flex;
-            gap: 15px;
-            overflow-x: auto;
-            padding-bottom: 10px;
-        }
-
-        .hourly-item {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 12px;
-            min-width: 60px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .hourly-time {
-            font-size: 12px;
-            opacity: 0.7;
-            margin-bottom: 8px;
-        }
-
-        .hourly-icon {
-            font-size: 24px;
-            margin-bottom: 8px;
-        }
-
-        .hourly-temp {
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .daily-forecast {
-            margin-bottom: 20px;
-        }
-
-        .daily-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .daily-item {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .daily-day {
-            font-size: 14px;
-            font-weight: 500;
-            min-width: 80px;
-        }
-
-        .daily-icon {
-            font-size: 20px;
-            margin: 0 15px;
-        }
-
-        .daily-temps {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .daily-min {
-            font-size: 14px;
-            opacity: 0.7;
-        }
-
-        .daily-max {
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 40px;
-            font-size: 18px;
-        }
-        
-        .error {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.18);
-            border-radius: 16px;
-            padding: 20px;
-            text-align: center;
-            color: #fca5a5;
-        }
-
-        /* Scrollbar styling */
-        .hourly-container::-webkit-scrollbar {
-            height: 4px;
-        }
-
-        .hourly-container::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
-        }
-
-        .hourly-container::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 2px;
-        }
-
-        .hourly-container::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.5);
-        }
-
-        .version-info {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            font-size: 10px;
-            opacity: 0.5;
-        }
-
-        .refresh-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 12px;
-            padding: 8px 16px;
-            color: white;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 15px;
-            width: 100%;
-        }
-
-        .refresh-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
-
-        /* Améliorations interface moderne */
-        .weather-icon {
-            filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4));
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .temperature {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .detail-card {
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .detail-card:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .hourly-item {
-            transition: all 0.3s ease;
-        }
-
-        .hourly-item:hover {
-            transform: scale(1.05);
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        .daily-item {
-            transition: all 0.3s ease;
-        }
-
-        .daily-item:hover {
-            transform: translateX(5px);
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        .location-header {
-            animation: slideDown 0.5s ease-out;
-        }
-
-        @keyframes slideDown {
-            from { 
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to { 
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .main-weather {
-            animation: fadeIn 0.8s ease-out 0.2s both;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .weather-details {
-            animation: fadeIn 1s ease-out 0.4s both;
-        }
-
-        .hourly-forecast {
-            animation: fadeIn 1.2s ease-out 0.6s both;
-        }
-
-        .daily-forecast {
-            animation: fadeIn 1.4s ease-out 0.8s both;
-        }
-
-        /* Effet de brillance */
-        .weather-container::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                45deg,
-                transparent 30%,
-                rgba(255, 255, 255, 0.1) 50%,
-                transparent 70%
-            );
-            transform: rotate(45deg);
-            animation: shine 3s ease-in-out infinite;
-            pointer-events: none;
-        }
-
-        @keyframes shine {
-            0%, 100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-        }
-    </style>
+    <title>Jarvis - Votre Assistant Intelligent</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-    <div class="background-pattern"></div>
-    <div class="floating-shapes">
-        <div class="shape shape-1"></div>
-        <div class="shape shape-2"></div>
-        <div class="shape shape-3"></div>
-    </div>
-    
-    <div class="container">
-        <div id="app">
-            <div class="loading">
-                <div>🌤 Chargement de l'application météo...</div>
-            </div>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h2 class="loading-text">Jarvis</h2>
+            <p class="loading-subtext">Votre assistant intelligent</p>
+            <button class="loading-close-btn" id="loadingCloseBtn">Accéder au site</button>
         </div>
     </div>
 
-    <script>
-        // API Open-Meteo
-        const fetchWeatherData = async (city) => {
-            const url = `https://api.open-meteo.com/v1/forecast?latitude=${city.latitude}&longitude=${city.longitude}` +
-                `&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,wind_direction_10m,weather_code,is_day,uv_index,visibility,pressure_msl,precipitation` +
-                `&hourly=temperature_2m,weather_code,is_day,precipitation_probability,relative_humidity_2m,wind_speed_10m` +
-                `&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max` +
-                `&timezone=auto&forecast_days=7&wind_speed_unit=kmh&temperature_unit=celsius&_=${Date.now()}`;
-            
-            try {
-                const response = await fetch(url);
-                return await response.json();
-            } catch (error) {
-                console.error('Erreur API:', error);
-                return null;
-            }
-        };
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-text">tomclair</span><span class="logo-dot">.tech</span>
+            </div>
+            <div class="nav-links">
+                <a href="#hero" class="nav-link active">Accueil</a>
+                <a href="#features" class="nav-link">Fonctionnalités</a>
+                <a href="#tech" class="nav-link">Technique</a>
+                <a href="#faq" class="nav-link">FAQ</a>
+                <a href="#testimonials" class="nav-link">Témoignages</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+            <div class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
 
-        // Description météo
-        const describeWeather = (code, isDay) => {
-            const weatherTypes = {
-                0: { label: 'Ciel dégagé', icon: '☀️' },
-                1: { label: 'Ciel dégagé', icon: '🌤' },
-                2: { label: 'Partiellement nuageux', icon: '⛅' },
-                3: { label: 'Couvert', icon: '☁️' },
-                45: { label: 'Brouillard', icon: '🌫' },
-                48: { label: 'Brouillard', icon: '🌫' },
-                51: { label: 'Bruine légère', icon: '🌦' },
-                53: { label: 'Bruine modérée', icon: '🌧' },
-                55: { label: 'Bruine dense', icon: '🌧' },
-                56: { label: 'Bruine verglaçante', icon: '🌨' },
-                57: { label: 'Bruine verglaçante', icon: '🌨' },
-                61: { label: 'Pluie', icon: '🌧' },
-                63: { label: 'Pluie modérée', icon: '🌧' },
-                65: { label: 'Forte pluie', icon: '⛈' },
-                66: { label: 'Pluie verglaçante', icon: '🌨' },
-                67: { label: 'Pluie verglaçante', icon: '🌨' },
-                71: { label: 'Neige légère', icon: '🌨' },
-                73: { label: 'Neige modérée', icon: '❄️' },
-                75: { label: 'Neige dense', icon: '❄️' },
-                77: { label: 'Neige verglaçante', icon: '🌨' },
-                80: { label: 'Averses', icon: '🌦' },
-                81: { label: 'Averses', icon: '🌧' },
-                82: { label: 'Averses', icon: '🌧' },
-                85: { label: 'Neige', icon: '❄️' },
-                86: { label: 'Neige', icon: '❄️' },
-                95: { label: 'Orage', icon: '⛈' },
-                96: { label: 'Orage', icon: '⛈' },
-                99: { label: 'Orage', icon: '⛈' }
-            };
-            
-            return weatherTypes[code] || { label: 'Inconnu', icon: '❓' };
-        };
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <span class="title-line">Jarvis</span>
+                <span class="title-line gradient-text">Votre Assistant Intelligent</span>
+            </h1>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-icon">✓</span>
+                    <span class="stat-text">SYSTÈME</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">🤖</span>
+                    <span class="stat-text">IA TECHNOLOGIE</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">🕐</span>
+                    <span class="stat-text">24/7 SUPPORT</span>
+                </div>
+            </div>
+            <div class="hero-actions">
+                <a href="JARVIS_Setup_v4.zip" class="btn btn-primary" download="JARVIS_Setup_v4.zip">
+                    <i class="fa-solid fa-download"></i>
+                    <span>TÉLÉCHARGER JARVIS</span>
+                </a>
+                <a href="#features" class="btn btn-secondary">
+                    <i class="fa-solid fa-play"></i>
+                    <span>DÉCOUVRIR</span>
+                </a>
+            </div>
+            <div class="hero-socials">
+                <a href="https://www.tiktok.com/@tom_visionai_pro" target="_blank" rel="noopener" class="social-link social-tiktok" aria-label="TikTok">
+                    <i class="fa-brands fa-tiktok"></i>
+                    <span>@tom_visionai_pro</span>
+                </a>
+                <a href="https://www.instagram.com/tom_visionai_pro/" target="_blank" rel="noopener" class="social-link social-instagram" aria-label="Instagram">
+                    <i class="fa-brands fa-instagram"></i>
+                    <span>@tom_visionai_pro</span>
+                </a>
+            </div>
+        </div>
+    </section>
 
-        // Fonction principale
-        const initWeatherApp = async () => {
-            const city = {
-                id: 4164138,
-                name: "Paris",
-                country: "France",
-                latitude: 48.8566,
-                longitude: 2.3522,
-                timezone: "auto"
-            };
-            
-            try {
-                // Afficher le chargement
-                const app = document.getElementById('app');
-                app.innerHTML = '<div class="loading"><div>🌤 Chargement des données météo...</div></div>';
-                
-                // Charger les données
-                const weatherData = await fetchWeatherData(city);
-                
-                if (weatherData) {
-                    // Obtenir l'heure locale
-                    const now = new Date();
-                    const currentHour = now.getHours();
-                    const isDayTime = currentHour >= 6 && currentHour < 20;
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">FONCTIONNALITÉS</span>
+                <h2 class="section-title">Ce Que Jarvis Peut Faire Pour Vous</h2>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>Assistant Vocal</h3>
+                    <p>Interaction naturelle par la voix.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Automatisation</h3>
+                    <p>Automatisez vos tâches répétitives.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Multi-Plateforme</h3>
+                    <p>Accédez depuis n'importe quel appareil.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                    // Prévisions horaires
-                    const hourlySlice = (() => {
-                        const idx = 0;
-                        const endIdx = Math.min(idx + 24, weatherData.hourly.time.length);
-                        const result = [];
+    <!-- Tech Section -->
+    <section class="tech-section" id="tech">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">TECHNOLOGIE</span>
+                <h2 class="section-title">L'Innovation Derrière Jarvis</h2>
+            </div>
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <div class="tech-icon">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
+                    <h3>Intelligence Artificielle</h3>
+                    <p>Technologie IA avancée pour des réponses intelligentes et contextuelles.</p>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon">
+                        <i class="fa-solid fa-microphone"></i>
+                    </div>
+                    <h3>Reconnaissance Vocale</h3>
+                    <p>Compréhension naturelle du langage pour une interaction fluide.</p>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon">
+                        <i class="fa-solid fa-cloud"></i>
+                    </div>
+                    <h3>Cloud Computing</h3>
+                    <p>Infrastructure cloud pour une disponibilité 24/7 et des performances optimales.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                        for (let i = idx; i < endIdx; i++) {
-                            const hourDate = new Date(weatherData.hourly.time[i]);
-                            const hour = hourDate.getHours();
-                            const hourIsDay = hour >= 6 && hour < 20;
-                            
-                            const temp = Math.round(weatherData.hourly.temperature_2m[i]);
-                            const weather = describeWeather(weatherData.hourly.weather_code[i], hourIsDay ? 1 : 0);
-                            
-                            const progressiveHour = (currentHour + (i - idx)) % 24;
-                            
-                            result.push({
-                                time: i === idx ? "mtn" : `${progressiveHour.toString().padStart(2, '0')}H`,
-                                temp: temp,
-                                info: weather,
-                                isDay: hourIsDay,
-                                hour: hour
-                            });
-                        }
-                        return result;
-                    })();
+    <!-- FAQ Section -->
+    <section class="faq-section" id="faq">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">FAQ</span>
+                <h2 class="section-title">Questions Fréquentes</h2>
+            </div>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Comment installer Jarvis ?</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Téléchargez le fichier JARVIS_Setup_v4.zip, décompressez-le et suivez les instructions d'installation.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Quelles sont les configurations requises ?</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Windows 10/11, 4GB RAM minimum, et une connexion internet pour les fonctionnalités avancées.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Est-ce que Jarvis est gratuit ?</h3>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Jarvis propose une version gratuite avec des fonctionnalités de base et des options premium avancées.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                    const currentWeather = describeWeather(weatherData.current.weather_code, isDayTime ? 1 : 0);
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <h2>Contactez-Nous</h2>
+            <form class="contact-form" id="contactForm" action="https://api.web3forms.com/submit" method="POST">
+                <input type="hidden" name="access_key" value="42e1bd3d-5ef8-42c7-bb4b-cd7335bfbe16">
+                <input type="hidden" name="subject" value="Nouveau message depuis tomclair.tech">
+                <div class="form-group">
+                    <label for="name">Nom</label>
+                    <input type="text" id="name" name="name" required placeholder="Votre nom">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required placeholder="votre@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="5" required placeholder="Votre message..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">ENVOYER</button>
+            </form>
+        </div>
+    </section>
 
-                    // Afficher l'application avec le nouveau design moderne
-                    app.innerHTML = `
-                        <div class="header">
-                            <h1>Weather App</h1>
-                            <p>Application météo moderne avec design élégant et prévisions en temps réel</p>
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">TÉMOIGNAGES</span>
+                <h2 class="section-title">Ce Que Disent Nos Utilisateurs</h2>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"Jarvis a complètement transformé ma façon de travailler. L'assistant vocal est incroyable !"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">JD</div>
+                        <div class="author-info">
+                            <div class="author-name">Jean Dupont</div>
+                            <div class="author-title">Entrepreneur</div>
                         </div>
-
-                        <div class="weather-grid">
-                            <div class="weather-card">
-                                <div class="main-weather">
-                                    <div class="weather-icon-main">${currentWeather.icon}</div>
-                                    <div class="temperature-main">${Math.round(weatherData.current.temperature_2m)}°</div>
-                                    <div class="weather-description">${currentWeather.label}</div>
-                                    <div>Max.: ${Math.round(weatherData.daily.temperature_2m_max[0])}°  Min.: ${Math.round(weatherData.daily.temperature_2m_min[0])}°</div>
-                                </div>
-                            </div>
-
-                            <div class="weather-card">
-                                <div class="card-header">
-                                    <div class="card-title">Détails météo</div>
-                                    <div class="card-icon">📊</div>
-                                </div>
-                                <div class="weather-details">
-                                    <div class="detail-item">
-                                        <div class="detail-value">${weatherData.current.relative_humidity_2m}%</div>
-                                        <div class="detail-label">💧 Humidité</div>
-                                    </div>
-                                    <div class="detail-item">
-                                        <div class="detail-value">${Math.round(weatherData.current.wind_speed_10m)}</div>
-                                        <div class="detail-label">💨 Vent km/h</div>
-                                    </div>
-                                    <div class="detail-item">
-                                        <div class="detail-value">${Math.round(weatherData.current.apparent_temperature)}°</div>
-                                        <div class="detail-label">🌡 Ressenti</div>
-                                    </div>
-                                    <div class="detail-item">
-                                        <div class="detail-value">${weatherData.current.uv_index || 0}</div>
-                                        <div class="detail-label">☀️ UV</div>
-                                    </div>
-                                    <div class="detail-item">
-                                        <div class="detail-value">${weatherData.current.visibility || 10} km</div>
-                                        <div class="detail-label">👁 Visibilité</div>
-                                    </div>
-                                    <div class="detail-item">
-                                        <div class="detail-value">${weatherData.current.pressure_msl || 1013} hPa</div>
-                                        <div class="detail-label">🔵 Pression</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="weather-card">
-                                <div class="card-header">
-                                    <div class="card-title">Prévisions horaires</div>
-                                    <div class="card-icon">⏰</div>
-                                </div>
-                                <div class="hourly-forecast">
-                                    <div class="hourly-grid">
-                                        ${hourlySlice.slice(0, 12).map((hour, i) => `
-                                            <div class="hour-item">
-                                                <div class="hour-time">${hour.time}</div>
-                                                <div class="hour-icon">${hour.info.icon}</div>
-                                                <div class="hour-temp">${hour.temp}°</div>
-                                            </div>
-                                        `).join('')}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="weather-card">
-                                <div class="card-header">
-                                    <div class="card-title">Prévisions sur 7 jours</div>
-                                    <div class="card-icon">📅</div>
-                                </div>
-                                <div class="daily-forecast">
-                                    <div class="daily-list">
-                                        ${weatherData.daily.time.map((_, i) => {
-                                            const dayWeather = describeWeather(weatherData.daily.weather_code[i], 1);
-                                            const days = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
-                                            const dayName = i === 0 ? "Aujourd'hui" : days[new Date(weatherData.daily.time[i]).getDay()];
-                                            
-                                            return `
-                                                <div class="daily-item">
-                                                    <div class="daily-day">${dayName}</div>
-                                                    <div class="daily-icon">${dayWeather.icon}</div>
-                                                    <div class="daily-temps">
-                                                        <div class="daily-min">${Math.round(weatherData.daily.temperature_2m_min[i])}°</div>
-                                                        <div class="daily-max">${Math.round(weatherData.daily.temperature_2m_max[i])}°</div>
-                                                    </div>
-                                                </div>
-                                            `;
-                                        }).join('')}
-                                    </div>
-                                </div>
-                            </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"L'automatisation des tâches me fait gagner un temps précieux chaque jour."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">ML</div>
+                        <div class="author-info">
+                            <div class="author-name">Marie Leblanc</div>
+                            <div class="author-title">Développeuse</div>
                         </div>
-
-                        <div style="text-align: center;">
-                            <button class="refresh-btn" onclick="location.reload()">
-                                🔄 Actualiser les données
-                            </button>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"Interface magnifique et technologie de pointe. Je recommande vivement !"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">PL</div>
+                        <div class="author-info">
+                            <div class="author-name">Pierre Laurent</div>
+                            <div class="author-title">Designer UX</div>
                         </div>
-                    `;
-                } else {
-                    throw new Error('Données météo non disponibles');
-                }
-                
-            } catch (error) {
-                console.error('Erreur:', error);
-                const app = document.getElementById('app');
-                app.innerHTML = '<div class="error"><div>❌ Impossible de charger les données météo</div></div>';
-            }
-        };
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        // Forcer le rechargement toutes les 5 minutes
-        setInterval(() => {
-            console.log('Actualisation automatique des données...');
-            initWeatherApp();
-        }, 300000);
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2026 tomclair.tech - Tous droits réservés</p>
+        </div>
+    </footer>
 
-        // Démarrer l'application lorsque le DOM est chargé
-        document.addEventListener('DOMContentLoaded', initWeatherApp);
-    </script>
-<div class="version-info" id="versionInfo">v1.0</div>
-
-    <script>
-        // Version pour forcer la mise à jour
-        const APP_VERSION = '1.0.' + Date.now();
-        document.getElementById('versionInfo').textContent = APP_VERSION;
+    <script src="script.js"></script>
+</body>
+</html>
