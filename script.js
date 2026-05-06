@@ -9,47 +9,87 @@ window.addEventListener('load', function() {
 });
 
 function showWeekendUpdateAlert() {
-    // Créer une alerte stylisée pour la mise à jour du weekend
+    // Créer une alerte stylisée et détaillée pour la mise à jour du weekend
     var alertDiv = document.createElement('div');
     alertDiv.id = 'weekendAlert';
     alertDiv.innerHTML = `
         <div class="alert-content">
-            <div class="alert-icon">
-                <i class="fa-solid fa-bell"></i>
+            <div class="alert-header">
+                <div class="alert-icon">
+                    <i class="fa-solid fa-bell"></i>
+                </div>
+                <div class="alert-title">
+                    <h2>🚀 MISE À JOUR WEEKEND !</h2>
+                    <p>Nouvelles fonctionnalités et améliorations majeures</p>
+                </div>
+                <button class="alert-close" onclick="closeWeekendAlert()">
+                    <i class="fa-solid fa-times"></i>
+                </button>
             </div>
-            <div class="alert-text">
-                <h3>🚀 Mise à Jour Weekend !</h3>
-                <p>Nouvelles fonctionnalités et améliorations arrivent ce weekend sur tomclair.tech !</p>
+            <div class="alert-details">
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <i class="fa-solid fa-sparkles"></i>
+                        <span>Interface utilisateur complètement repensée</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fa-solid fa-rocket"></i>
+                        <span>Performance optimisée et chargement ultra-rapide</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span>Sécurité renforcée et protection des données</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fa-solid fa-mobile-alt"></i>
+                        <span>Expérience mobile 100% responsive</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fa-solid fa-code"></i>
+                        <span>Nouvelles fonctionnalités Jarvis avancées</span>
+                    </div>
+                </div>
+                <div class="alert-footer">
+                    <div class="alert-timing">
+                        <i class="fa-solid fa-clock"></i>
+                        <span>Déploiement : Samedi et Dimanche</span>
+                    </div>
+                    <div class="alert-cta">
+                        <button class="alert-btn" onclick="closeWeekendAlert()">
+                            <i class="fa-solid fa-thumbs-up"></i>
+                            <span>Super !</span>
+                        </button>
+                    </div>
+                </div>
             </div>
-            <button class="alert-close" onclick="closeWeekendAlert()">
-                <i class="fa-solid fa-times"></i>
-            </button>
         </div>
     `;
     
-    // Ajouter les styles CSS
+    // Ajouter les styles CSS améliorés
     alertDiv.style.cssText = `
         position: fixed;
-        top: 100px;
+        top: 80px;
         right: 20px;
-        background: linear-gradient(135deg, #00d4ff 0%, #0066ff 100%);
+        background: linear-gradient(135deg, #00d4ff 0%, #0066ff 50%, #7c3aed 100%);
         color: white;
         padding: 0;
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 212, 255, 0.5);
         z-index: 10000;
-        max-width: 400px;
-        animation: slideInRight 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        max-width: 500px;
+        min-width: 400px;
+        animation: slideInRight 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        backdrop-filter: blur(20px);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        font-family: 'Rajdhani', sans-serif;
     `;
     
-    // Ajouter le CSS pour l'animation
+    // Ajouter le CSS pour l'animation améliorée
     var style = document.createElement('style');
     style.textContent = `
         @keyframes slideInRight {
             from {
-                transform: translateX(100%);
+                transform: translateX(120%);
                 opacity: 0;
             }
             to {
@@ -64,88 +104,219 @@ function showWeekendUpdateAlert() {
                 opacity: 1;
             }
             to {
-                transform: translateX(100%);
+                transform: translateX(120%);
                 opacity: 0;
             }
         }
         
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.8); }
+        }
+        
         #weekendAlert .alert-content {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 20px;
+            padding: 0;
             position: relative;
         }
         
+        #weekendAlert .alert-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px 20px 0 0;
+        }
+        
         #weekendAlert .alert-icon {
+            font-size: 32px;
+            animation: pulse 2s infinite, glow 3s infinite;
+            background: rgba(255, 255, 255, 0.2);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #weekendAlert .alert-title h2 {
+            margin: 0 0 8px 0;
             font-size: 24px;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-        
-        #weekendAlert .alert-text h3 {
-            margin: 0 0 5px 0;
-            font-size: 16px;
-            font-weight: 700;
+            font-weight: 900;
             color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1.2;
         }
         
-        #weekendAlert .alert-text p {
+        #weekendAlert .alert-title p {
             margin: 0;
-            font-size: 14px;
+            font-size: 16px;
             opacity: 0.9;
             line-height: 1.4;
+            font-weight: 500;
         }
         
         #weekendAlert .alert-close {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 15px;
+            right: 15px;
             background: rgba(255, 255, 255, 0.2);
             border: none;
             color: white;
-            width: 30px;
-            height: 30px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
+            font-size: 18px;
         }
         
         #weekendAlert .alert-close:hover {
             background: rgba(255, 255, 255, 0.3);
-            transform: rotate(90deg);
+            transform: rotate(90deg) scale(1.1);
+        }
+        
+        #weekendAlert .alert-details {
+            padding: 20px 25px;
+        }
+        
+        #weekendAlert .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        #weekendAlert .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        #weekendAlert .feature-item:last-child {
+            border-bottom: none;
+        }
+        
+        #weekendAlert .feature-item:hover {
+            transform: translateX(5px);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding-left: 10px;
+        }
+        
+        #weekendAlert .feature-item i {
+            font-size: 18px;
+            color: #00ff88;
+            min-width: 20px;
+        }
+        
+        #weekendAlert .feature-item span {
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+        
+        #weekendAlert .alert-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0 0 20px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        #weekendAlert .alert-timing {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        #weekendAlert .alert-timing i {
+            color: #00ff88;
+        }
+        
+        #weekendAlert .alert-btn {
+            background: rgba(0, 255, 136, 0.2);
+            border: 2px solid #00ff88;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        #weekendAlert .alert-btn:hover {
+            background: rgba(0, 255, 136, 0.3);
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
         }
         
         @media (max-width: 768px) {
             #weekendAlert {
-                top: 80px;
+                top: 60px;
                 right: 10px;
                 left: 10px;
                 max-width: none;
+                min-width: auto;
             }
             
-            #weekendAlert .alert-content {
-                padding: 15px;
-                gap: 10px;
+            #weekendAlert .alert-header {
+                padding: 20px;
+                gap: 15px;
             }
             
             #weekendAlert .alert-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+            }
+            
+            #weekendAlert .alert-title h2 {
                 font-size: 20px;
             }
             
-            #weekendAlert .alert-text h3 {
+            #weekendAlert .alert-title p {
                 font-size: 14px;
             }
             
-            #weekendAlert .alert-text p {
-                font-size: 12px;
+            #weekendAlert .alert-details {
+                padding: 15px 20px;
+            }
+            
+            #weekendAlert .feature-item {
+                gap: 10px;
+            }
+            
+            #weekendAlert .feature-item span {
+                font-size: 13px;
+            }
+            
+            #weekendAlert .alert-footer {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px 20px;
             }
         }
     `;
@@ -153,10 +324,10 @@ function showWeekendUpdateAlert() {
     document.head.appendChild(style);
     document.body.appendChild(alertDiv);
     
-    // Fermeture automatique après 8 secondes
+    // Fermeture automatique après 10 secondes
     setTimeout(function() {
         closeWeekendAlert();
-    }, 8000);
+    }, 10000);
 }
 
 function closeWeekendAlert() {
