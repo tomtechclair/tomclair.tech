@@ -758,28 +758,6 @@ body {
     width: 100%;
 }
 
-.hero-socials {
-    display: flex;
-    gap: 16px;
-    justify-content: center;
-}
-
-.social-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: #e0e0e0;
-    text-decoration: none;
-    padding: 8px 16px;
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.05);
-    transition: all 0.3s;
-}
-
-.social-link:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateY(-2px);
-}
 
 .features {
     padding: 80px 0;
