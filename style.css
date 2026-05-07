@@ -232,18 +232,17 @@ body {
     margin-bottom: 1.5rem;
     color: #00d4ff;
     letter-spacing: 1px;
-    line-height: 1.2;
 }
 
 .intro-features .feature-item.hero-title {
     font-family: 'Orbitron', sans-serif;
-    font-size: 3.5rem;
+    font-size: 42px;
     font-weight: 900;
     line-height: 1.2;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     text-transform: uppercase;
-    letter-spacing: 3px;
-    word-spacing: 2px;
+    letter-spacing: 2px;
+    word-spacing: 1px;
 }
 
 .intro-loading {
@@ -623,14 +622,17 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: radial-gradient(ellipse at center, #0a0e27 0%, #050714 100%);
     position: relative;
     overflow: hidden;
+    padding: 60px 0;
 }
 
 .hero-content {
     text-align: center;
     z-index: 10;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
 .hero-title {
@@ -670,9 +672,9 @@ body {
 
 .hero-actions {
     display: flex;
-    gap: 16px;
+    gap: 20px;
     justify-content: center;
-    margin-bottom: 32px;
+    margin-bottom: 40px;
 }
 
 .btn {
