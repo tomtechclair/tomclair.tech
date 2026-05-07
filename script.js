@@ -1,5 +1,4 @@
 window.addEventListener('load', function() {
-    initJarvisIntro();
     showWeekendUpdateAlert();
     initScrollProgress();
     initBackToTop();
@@ -9,34 +8,6 @@ window.addEventListener('load', function() {
     initSmoothScroll();
 });
 
-function initJarvisIntro() {
-    var intro = document.getElementById('jarvisIntro');
-    var skipBtn = document.getElementById('introSkip');
-    
-    if (!intro) return;
-    
-    // Fermeture automatique après 5 secondes
-    setTimeout(function() {
-        closeJarvisIntro();
-    }, 5000);
-    
-    // Bouton skip
-    if (skipBtn) {
-        skipBtn.addEventListener('click', function() {
-            closeJarvisIntro();
-        });
-    }
-}
-
-function closeJarvisIntro() {
-    var intro = document.getElementById('jarvisIntro');
-    if (intro) {
-        intro.classList.add('hidden');
-        setTimeout(function() {
-            intro.style.display = 'none';
-        }, 1000);
-    }
-}
 
 function showWeekendUpdateAlert() {
     // Créer une alerte stylisée et détaillée pour la mise à jour du weekend
@@ -101,7 +72,7 @@ function showWeekendUpdateAlert() {
                         <i class="fa-solid fa-shield-halved"></i>
                         <span>Sécurité renforcée maximale</span>
                     </div>
-                </div>
+                                    </div>
                 <div class="alert-footer">
                     <div class="alert-timing">
                         <i class="fa-solid fa-tools"></i>
