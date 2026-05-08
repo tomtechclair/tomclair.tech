@@ -545,19 +545,19 @@ function closeWeekendAlert() {
 }
 
 function checkMaintenanceMode() {
-    // Date de début de maintenance : aujourd'hui à 23H
+    // Date de début de maintenance : aujourd'hui à 23H20
     var now = new Date();
     var maintenanceStart = new Date();
-    maintenanceStart.setHours(23, 0, 0, 0);
+    maintenanceStart.setHours(23, 20, 0, 0);
     
-    // Si on est après 23H aujourd'hui, afficher le mode maintenance
+    // Si on est après 23H20 aujourd'hui, afficher le mode maintenance complet
     if (now >= maintenanceStart) {
         showMaintenanceMode();
     }
 }
 
 function showMaintenanceMode() {
-    // Créer un overlay de maintenance
+    // Créer un overlay de maintenance complet
     var maintenanceOverlay = document.createElement('div');
     maintenanceOverlay.id = 'maintenanceOverlay';
     maintenanceOverlay.innerHTML = `
@@ -567,19 +567,43 @@ function showMaintenanceMode() {
             </div>
             <h1>🔧 MODE MAINTENANCE</h1>
             <p>Le site est actuellement en maintenance pour une mise à jour majeure.</p>
-            <p>Nous revenons rapidement avec de nouvelles fonctionnalités !</p>
+            <p>Nous procédons à une amélioration complète de Jarvis et de l'interface utilisateur.</p>
+            
+            <div class="maintenance-progress">
+                <div class="progress-label">
+                    <span>Progression de la mise à jour</span>
+                    <span class="progress-percent" id="progressPercent">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-status" id="progressStatus">Initialisation de la maintenance...</div>
+            </div>
+            
             <div class="maintenance-timer">
                 <div class="timer-label">Temps restant estimé :</div>
                 <div class="timer-display" id="maintenanceTimer">02:00:00</div>
             </div>
+            
+            <div class="maintenance-features">
+                <h3>🚀 Nouveautés en cours d'installation :</h3>
+                <ul>
+                    <li>Interface Jarvis entièrement refaite</li>
+                    <li>Performance ultra-optimisée</li>
+                    <li>Sécurité renforcée maximale</li>
+                    <li>Nouvelles fonctionnalités avancées</li>
+                </ul>
+            </div>
+            
             <div class="maintenance-message">
                 <p>Merci de votre patience 🙏</p>
                 <p>Tomclair.tech - Mise à jour en cours...</p>
+                <p class="maintenance-note">Le site sera de retour très prochainement avec une expérience améliorée !</p>
             </div>
         </div>
     `;
     
-    // Ajouter les styles CSS pour le mode maintenance
+    // Ajouter les styles CSS pour le mode maintenance complet
     var maintenanceStyle = document.createElement('style');
     maintenanceStyle.textContent = `
         #maintenanceOverlay {
@@ -599,18 +623,19 @@ function showMaintenanceMode() {
         
         .maintenance-content {
             text-align: center;
-            max-width: 500px;
-            padding: 40px 20px;
+            max-width: 600px;
+            padding: 40px 30px;
             background: rgba(255, 255, 255, 0.05);
             border: 2px solid rgba(0, 212, 255, 0.3);
             border-radius: 20px;
             backdrop-filter: blur(20px);
+            box-shadow: 0 20px 60px rgba(0, 212, 255, 0.2);
         }
         
         .maintenance-icon {
-            font-size: 60px;
+            font-size: 70px;
             color: #00d4ff;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             animation: pulse 2s infinite;
         }
         
@@ -621,17 +646,80 @@ function showMaintenanceMode() {
         
         .maintenance-content h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 32px;
-            margin-bottom: 20px;
+            font-size: 36px;
+            margin-bottom: 25px;
             color: #00d4ff;
             text-transform: uppercase;
             letter-spacing: 2px;
         }
         
         .maintenance-content p {
-            font-size: 16px;
-            margin-bottom: 15px;
+            font-size: 18px;
+            margin-bottom: 20px;
             line-height: 1.6;
+        }
+        
+        .maintenance-progress {
+            margin: 30px 0;
+            padding: 25px;
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #00ff88;
+        }
+        
+        .progress-percent {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00d4ff, #00ff88);
+            border-radius: 6px;
+            width: 0%;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .progress-status {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            font-style: italic;
         }
         
         .maintenance-timer {
@@ -658,34 +746,112 @@ function showMaintenanceMode() {
             letter-spacing: 2px;
         }
         
+        .maintenance-features {
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .maintenance-features h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            color: #00d4ff;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .maintenance-features ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .maintenance-features li {
+            font-size: 16px;
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+            text-align: left;
+        }
+        
+        .maintenance-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #00ff88;
+            font-weight: bold;
+        }
+        
         .maintenance-message {
-            margin-top: 20px;
-            padding-top: 20px;
+            margin-top: 30px;
+            padding-top: 25px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .maintenance-message p {
-            font-size: 14px;
+            font-size: 16px;
             color: rgba(255, 255, 255, 0.7);
-            margin: 5px 0;
+            margin: 8px 0;
+        }
+        
+        .maintenance-note {
+            font-size: 14px !important;
+            color: #00ff88 !important;
+            font-style: italic;
         }
         
         @media (max-width: 768px) {
             .maintenance-content {
                 margin: 20px;
-                padding: 30px 15px;
+                padding: 30px 20px;
+                max-width: none;
             }
             
             .maintenance-content h1 {
-                font-size: 24px;
+                font-size: 28px;
             }
             
             .maintenance-content p {
+                font-size: 16px;
+            }
+            
+            .maintenance-progress {
+                padding: 20px;
+            }
+            
+            .progress-label {
                 font-size: 14px;
+            }
+            
+            .progress-percent {
+                font-size: 16px;
+            }
+            
+            .progress-bar {
+                height: 10px;
+            }
+            
+            .progress-status {
+                font-size: 12px;
             }
             
             .timer-display {
                 font-size: 28px;
+            }
+            
+            .maintenance-features h3 {
+                font-size: 18px;
+            }
+            
+            .maintenance-features li {
+                font-size: 14px;
+            }
+            
+            .maintenance-message p {
+                font-size: 14px;
             }
         }
     `;
@@ -702,15 +868,31 @@ function startMaintenanceTimer() {
     var maintenanceDuration = 2 * 60 * 60 * 1000; // 2 heures en millisecondes
     var startTime = Date.now();
     
+    // Messages de progression
+    var progressMessages = [
+        "Initialisation de la maintenance...",
+        "Sauvegarde des données en cours...",
+        "Téléchargement des mises à jour...",
+        "Installation des nouveaux composants...",
+        "Configuration de l'interface Jarvis...",
+        "Optimisation des performances...",
+        "Tests de sécurité en cours...",
+        "Finalisation de la mise à jour...",
+        "Redémarrage des services...",
+        "Maintenance presque terminée..."
+    ];
+    
     function updateMaintenanceTimer() {
         var elapsed = Date.now() - startTime;
         var remaining = maintenanceDuration - elapsed;
+        var progress = Math.min((elapsed / maintenanceDuration) * 100, 100);
         
         if (remaining > 0) {
             var hours = Math.floor(remaining / (1000 * 60 * 60));
             var minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
             var seconds = Math.floor((remaining % (1000 * 60)) / 1000);
             
+            // Mettre à jour le timer
             var timerDisplay = document.getElementById('maintenanceTimer');
             if (timerDisplay) {
                 timerDisplay.textContent = 
@@ -719,10 +901,37 @@ function startMaintenanceTimer() {
                     String(seconds).padStart(2, '0');
             }
             
+            // Mettre à jour la barre de progression
+            var progressFill = document.getElementById('progressFill');
+            var progressPercent = document.getElementById('progressPercent');
+            var progressStatus = document.getElementById('progressStatus');
+            
+            if (progressFill && progressPercent && progressStatus) {
+                progressFill.style.width = progress + '%';
+                progressPercent.textContent = Math.floor(progress) + '%';
+                
+                // Choisir le message de progression approprié
+                var messageIndex = Math.floor((progress / 100) * progressMessages.length);
+                if (messageIndex >= progressMessages.length) messageIndex = progressMessages.length - 1;
+                progressStatus.textContent = progressMessages[messageIndex];
+            }
+            
             setTimeout(updateMaintenanceTimer, 1000);
         } else {
-            // Maintenance terminée, recharger la page
-            location.reload();
+            // Maintenance terminée, afficher 100% et recharger
+            var progressFill = document.getElementById('progressFill');
+            var progressPercent = document.getElementById('progressPercent');
+            var progressStatus = document.getElementById('progressStatus');
+            
+            if (progressFill && progressPercent && progressStatus) {
+                progressFill.style.width = '100%';
+                progressPercent.textContent = '100%';
+                progressStatus.textContent = 'Maintenance terminée ! Redémarrage...';
+            }
+            
+            setTimeout(function() {
+                location.reload();
+            }, 3000);
         }
     }
     
