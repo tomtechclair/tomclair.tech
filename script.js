@@ -373,12 +373,16 @@ function showWeekendUpdateAlert() {
         
         @media (max-width: 768px) {
             #weekendAlert {
-                top: 80px;
-                right: 15px;
-                left: 15px;
-                max-width: none;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                right: auto;
+                bottom: auto;
+                max-width: 95vw;
                 min-width: auto;
-                transform: translateX(0);
+                width: 90%;
+                z-index: 10000;
             }
             
             #weekendAlert .alert-header {
@@ -474,6 +478,9 @@ function showWeekendUpdateAlert() {
     // Démarrer le compte à rebours
     startCountdown();
     
+    // Vérifier si on est en mode maintenance (aujourd'hui à 23H)
+    checkMaintenanceMode();
+    
     // Plus de fermeture automatique - l'utilisateur doit cliquer sur "Parfait"
 }
 
@@ -523,13 +530,198 @@ function startCountdown() {
 }
 
 function closeWeekendAlert() {
-    var alert = document.getElementById('weekendAlert');
-    if (alert) {
-        alert.style.animation = 'slideOutRight 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+    var alertDiv = document.getElementById('weekendAlert');
+    if (alertDiv) {
+        alertDiv.style.animation = 'slideOutRight 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
         setTimeout(function() {
-            alert.remove();
-        }, 600);
+            alertDiv.remove();
+        }, 800);
     }
+}
+
+function checkMaintenanceMode() {
+    // Date de début de maintenance : aujourd'hui à 23H
+    var now = new Date();
+    var maintenanceStart = new Date();
+    maintenanceStart.setHours(23, 0, 0, 0);
+    
+    // Si on est après 23H aujourd'hui, afficher le mode maintenance
+    if (now >= maintenanceStart) {
+        showMaintenanceMode();
+    }
+}
+
+function showMaintenanceMode() {
+    // Créer un overlay de maintenance
+    var maintenanceOverlay = document.createElement('div');
+    maintenanceOverlay.id = 'maintenanceOverlay';
+    maintenanceOverlay.innerHTML = `
+        <div class="maintenance-content">
+            <div class="maintenance-icon">
+                <i class="fa-solid fa-tools"></i>
+            </div>
+            <h1>🔧 MODE MAINTENANCE</h1>
+            <p>Le site est actuellement en maintenance pour une mise à jour majeure.</p>
+            <p>Nous revenons rapidement avec de nouvelles fonctionnalités !</p>
+            <div class="maintenance-timer">
+                <div class="timer-label">Temps restant estimé :</div>
+                <div class="timer-display" id="maintenanceTimer">02:00:00</div>
+            </div>
+            <div class="maintenance-message">
+                <p>Merci de votre patience 🙏</p>
+                <p>Tomclair.tech - Mise à jour en cours...</p>
+            </div>
+        </div>
+    `;
+    
+    // Ajouter les styles CSS pour le mode maintenance
+    var maintenanceStyle = document.createElement('style');
+    maintenanceStyle.textContent = `
+        #maintenanceOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1f3a 100%);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Rajdhani', sans-serif;
+            color: #e0e0e0;
+        }
+        
+        .maintenance-content {
+            text-align: center;
+            max-width: 500px;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+        }
+        
+        .maintenance-icon {
+            font-size: 60px;
+            color: #00d4ff;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+        
+        .maintenance-content h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #00d4ff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .maintenance-content p {
+            font-size: 16px;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .maintenance-timer {
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+        
+        .timer-label {
+            font-size: 14px;
+            color: #00ff88;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .timer-display {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: #00ff88;
+            letter-spacing: 2px;
+        }
+        
+        .maintenance-message {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .maintenance-message p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            margin: 5px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .maintenance-content {
+                margin: 20px;
+                padding: 30px 15px;
+            }
+            
+            .maintenance-content h1 {
+                font-size: 24px;
+            }
+            
+            .maintenance-content p {
+                font-size: 14px;
+            }
+            
+            .timer-display {
+                font-size: 28px;
+            }
+        }
+    `;
+    
+    document.head.appendChild(maintenanceStyle);
+    document.body.appendChild(maintenanceOverlay);
+    
+    // Démarrer le timer de maintenance
+    startMaintenanceTimer();
+}
+
+function startMaintenanceTimer() {
+    // Timer de 2 heures pour la maintenance
+    var maintenanceDuration = 2 * 60 * 60 * 1000; // 2 heures en millisecondes
+    var startTime = Date.now();
+    
+    function updateMaintenanceTimer() {
+        var elapsed = Date.now() - startTime;
+        var remaining = maintenanceDuration - elapsed;
+        
+        if (remaining > 0) {
+            var hours = Math.floor(remaining / (1000 * 60 * 60));
+            var minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+            
+            var timerDisplay = document.getElementById('maintenanceTimer');
+            if (timerDisplay) {
+                timerDisplay.textContent = 
+                    String(hours).padStart(2, '0') + ':' +
+                    String(minutes).padStart(2, '0') + ':' +
+                    String(seconds).padStart(2, '0');
+            }
+            
+            setTimeout(updateMaintenanceTimer, 1000);
+        } else {
+            // Maintenance terminée, recharger la page
+            location.reload();
+        }
+    }
+    
+    updateMaintenanceTimer();
 }
 
 function initScrollProgress() {
