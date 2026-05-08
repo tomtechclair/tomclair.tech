@@ -373,38 +373,74 @@ function showWeekendUpdateAlert() {
         
         @media (max-width: 768px) {
             #weekendAlert {
-                top: 60px;
-                right: 10px;
-                left: 10px;
+                top: 80px;
+                right: 15px;
+                left: 15px;
                 max-width: none;
                 min-width: auto;
+                transform: translateX(0);
             }
             
             #weekendAlert .alert-header {
-                padding: 20px;
-                gap: 15px;
+                padding: 15px;
+                gap: 12px;
+                flex-direction: column;
+                text-align: center;
             }
             
             #weekendAlert .alert-icon {
-                width: 50px;
-                height: 50px;
-                font-size: 24px;
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+                margin-bottom: 8px;
             }
             
             #weekendAlert .alert-title h2 {
-                font-size: 20px;
+                font-size: 18px;
+                line-height: 1.2;
             }
             
             #weekendAlert .alert-title p {
-                font-size: 14px;
+                font-size: 13px;
+                margin-bottom: 0;
             }
             
             #weekendAlert .alert-details {
                 padding: 15px 20px;
             }
             
+            #weekendAlert .countdown-section {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+            
+            #weekendAlert .countdown-title {
+                font-size: 14px;
+                margin-bottom: 12px;
+                gap: 8px;
+            }
+            
+            #weekendAlert .countdown-timer {
+                gap: 3px;
+                margin-bottom: 12px;
+            }
+            
+            #weekendAlert .time-unit {
+                min-width: 45px;
+                padding: 8px 6px;
+            }
+            
+            #weekendAlert .time-value {
+                font-size: 20px;
+            }
+            
+            #weekendAlert .time-label {
+                font-size: 11px;
+            }
+            
             #weekendAlert .feature-item {
-                gap: 10px;
+                gap: 8px;
+                padding: 6px 0;
             }
             
             #weekendAlert .feature-item span {
@@ -413,9 +449,22 @@ function showWeekendUpdateAlert() {
             
             #weekendAlert .alert-footer {
                 flex-direction: column;
-                gap: 15px;
-                padding: 15px 20px;
+                gap: 12px;
+                padding: 12px 20px;
             }
+            
+            #weekendAlert .alert-timing {
+                font-size: 12px;
+                gap: 6px;
+            }
+            
+            #weekendAlert .alert-btn {
+                padding: 10px 20px;
+                font-size: 13px;
+                width: 100%;
+                justify-content: center;
+            }
+        }
         }
     `;
     
