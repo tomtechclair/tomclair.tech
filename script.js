@@ -388,87 +388,89 @@ function showWeekendUpdateAlert() {
             }
             
             #weekendAlert .alert-header {
-                padding: 12px !important;
-                gap: 8px !important;
-                flex-direction: column !important;
-                text-align: center !important;
+                padding: 20px !important;
+                gap: 15px !important;
+                flex-direction: row !important;
+                text-align: left !important;
+                align-items: center !important;
             }
             
             #weekendAlert .alert-icon {
-                width: 35px !important;
-                height: 35px !important;
-                font-size: 18px !important;
-                margin-bottom: 6px !important;
+                width: 50px !important;
+                height: 50px !important;
+                font-size: 20px !important;
+                margin-bottom: 0 !important;
             }
             
             #weekendAlert .alert-title h2 {
-                font-size: 16px !important;
+                font-size: 18px !important;
                 line-height: 1.2 !important;
                 margin-bottom: 4px !important;
             }
             
             #weekendAlert .alert-title p {
-                font-size: 12px !important;
+                font-size: 13px !important;
                 margin-bottom: 0 !important;
             }
             
             #weekendAlert .alert-details {
-                padding: 12px 15px !important;
+                padding: 20px 25px !important;
             }
             
             #weekendAlert .countdown-section {
-                padding: 12px !important;
-                margin-bottom: 15px !important;
+                padding: 20px !important;
+                margin-bottom: 20px !important;
             }
             
             #weekendAlert .countdown-title {
-                font-size: 12px !important;
-                margin-bottom: 10px !important;
-                gap: 6px !important;
+                font-size: 14px !important;
+                margin-bottom: 12px !important;
+                gap: 8px !important;
             }
             
             #weekendAlert .countdown-timer {
-                gap: 2px !important;
-                margin-bottom: 10px !important;
+                gap: 4px !important;
+                margin-bottom: 12px !important;
             }
             
             #weekendAlert .time-unit {
-                min-width: 40px !important;
-                padding: 6px 4px !important;
+                min-width: 50px !important;
+                padding: 8px 6px !important;
             }
             
             #weekendAlert .time-value {
-                font-size: 18px !important;
+                font-size: 20px !important;
             }
             
             #weekendAlert .time-label {
-                font-size: 10px !important;
+                font-size: 11px !important;
             }
             
             #weekendAlert .feature-item {
-                gap: 6px !important;
-                padding: 4px 0 !important;
+                gap: 10px !important;
+                padding: 6px 0 !important;
             }
             
             #weekendAlert .feature-item span {
-                font-size: 11px !important;
+                font-size: 12px !important;
             }
             
             #weekendAlert .alert-footer {
-                flex-direction: column !important;
-                gap: 10px !important;
-                padding: 10px 15px !important;
+                flex-direction: row !important;
+                gap: 12px !important;
+                padding: 12px 20px !important;
+                justify-content: space-between !important;
             }
             
             #weekendAlert .alert-timing {
-                font-size: 11px !important;
-                gap: 4px !important;
+                font-size: 12px !important;
+                gap: 6px !important;
             }
             
             #weekendAlert .alert-btn {
-                padding: 8px 15px !important;
-                font-size: 12px !important;
-                width: 100% !important;
+                padding: 8px 16px !important;
+                font-size: 13px !important;
+                width: auto !important;
                 justify-content: center !important;
             }
         }
