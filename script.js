@@ -877,17 +877,10 @@ function showMaintenanceMode() {
 }
 
 function startMaintenanceTimer() {
-    // Calculer le temps jusqu'à 18H aujourd'hui
-    var now = new Date();
-    var endTime = new Date();
-    endTime.setHours(18, 0, 0, 0);
-    
-    // Si on est déjà après 18H, mettre fin à 18H demain
-    if (now >= endTime) {
-        endTime.setDate(endTime.getDate() + 1);
-    }
-    
-    var maintenanceDuration = endTime - now;
+    // Progression fixe : +10% toutes les 1H05
+    var currentProgress = 0;
+    var progressInterval = 1000; // 1 minute en millisecondes (63 minutes pour 10%)
+    var totalDuration = 630000; // 10.5 minutes pour atteindre 100%
     var startTime = Date.now();
     
     // Messages de progression
@@ -906,39 +899,25 @@ function startMaintenanceTimer() {
     
     function updateMaintenanceTimer() {
         var elapsed = Date.now() - startTime;
-        var remaining = maintenanceDuration - elapsed;
-        var progress = Math.min((elapsed / maintenanceDuration) * 100, 100);
+        currentProgress = Math.min((elapsed / totalDuration) * 100, 100);
         
-        if (remaining > 0) {
-            var hours = Math.floor(remaining / (1000 * 60 * 60));
-            var minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((remaining % (1000 * 60)) / 1000);
-            
-            // Mettre à jour le timer
-            var timerDisplay = document.getElementById('maintenanceTimer');
-            if (timerDisplay) {
-                timerDisplay.textContent = 
-                    String(hours).padStart(2, '0') + ':' +
-                    String(minutes).padStart(2, '0') + ':' +
-                    String(seconds).padStart(2, '0');
-            }
-            
+        if (currentProgress < 100) {
             // Mettre à jour la barre de progression
             var progressFill = document.getElementById('progressFill');
             var progressPercent = document.getElementById('progressPercent');
             var progressStatus = document.getElementById('progressStatus');
             
             if (progressFill && progressPercent && progressStatus) {
-                progressFill.style.width = progress + '%';
-                progressPercent.textContent = Math.floor(progress) + '%';
+                progressFill.style.width = currentProgress + '%';
+                progressPercent.textContent = Math.floor(currentProgress) + '%';
                 
                 // Choisir le message de progression approprié
-                var messageIndex = Math.floor((progress / 100) * progressMessages.length);
+                var messageIndex = Math.floor((currentProgress / 100) * progressMessages.length);
                 if (messageIndex >= progressMessages.length) messageIndex = progressMessages.length - 1;
                 progressStatus.textContent = progressMessages[messageIndex];
             }
             
-            setTimeout(updateMaintenanceTimer, 1000);
+            setTimeout(updateMaintenanceTimer, progressInterval);
         } else {
             // Maintenance terminée, afficher 100% et recharger
             var progressFill = document.getElementById('progressFill');
