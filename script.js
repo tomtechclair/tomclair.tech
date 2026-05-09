@@ -545,15 +545,8 @@ function closeWeekendAlert() {
 }
 
 function checkMaintenanceMode() {
-    // Date de début de maintenance : aujourd'hui à 23H20
-    var now = new Date();
-    var maintenanceStart = new Date();
-    maintenanceStart.setHours(23, 20, 0, 0);
-    
-    // Si on est après 23H20 aujourd'hui, afficher le mode maintenance complet
-    if (now >= maintenanceStart) {
-        showMaintenanceMode();
-    }
+    // Maintenance immédiate - bloquer le site maintenant
+    showMaintenanceMode();
 }
 
 function showMaintenanceMode() {
@@ -568,6 +561,7 @@ function showMaintenanceMode() {
             <h1>🔧 MODE MAINTENANCE</h1>
             <p>Le site est actuellement en maintenance pour une mise à jour majeure.</p>
             <p>Nous procédons à une amélioration complète de Jarvis et de l'interface utilisateur.</p>
+            <p><strong>Le site sera de retour à 18H aujourd'hui.</strong></p>
             
             <div class="maintenance-progress">
                 <div class="progress-label">
@@ -864,8 +858,17 @@ function showMaintenanceMode() {
 }
 
 function startMaintenanceTimer() {
-    // Timer de 2 heures pour la maintenance
-    var maintenanceDuration = 2 * 60 * 60 * 1000; // 2 heures en millisecondes
+    // Calculer le temps jusqu'à 18H aujourd'hui
+    var now = new Date();
+    var endTime = new Date();
+    endTime.setHours(18, 0, 0, 0);
+    
+    // Si on est déjà après 18H, mettre fin à 18H demain
+    if (now >= endTime) {
+        endTime.setDate(endTime.getDate() + 1);
+    }
+    
+    var maintenanceDuration = endTime - now;
     var startTime = Date.now();
     
     // Messages de progression
