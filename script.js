@@ -1,5 +1,5 @@
 window.addEventListener('load', function() {
-    showWeekendUpdateAlert();
+    // showWeekendUpdateAlert(); // Désactivé
     initScrollProgress();
     initBackToTop();
     initMobileMenu();
