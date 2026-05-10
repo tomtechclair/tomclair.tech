@@ -545,8 +545,8 @@ function closeWeekendAlert() {
 }
 
 function checkMaintenanceMode() {
-    // Maintenance immédiate - bloquer le site maintenant
-    showMaintenanceMode();
+    // Mode maintenance désactivé - site accessible normalement
+    // showMaintenanceMode();
 }
 
 function showMaintenanceMode() {
